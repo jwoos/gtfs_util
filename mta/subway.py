@@ -1,49 +1,52 @@
-from collections import namedtuple
-from csv import DictReader
+import abc
 
 from mta.gtfs import realtime
 
-
-def parse_stops(filename):
-    with open(filename, 'r') as file:
-        reader = DictReader(file)
-        SubwayStop = namedtuple('SubwayStop', reader.fieldnames)
-        return {
-            row.stop_id: SubwayStop(**row) for row in reader
-        }
+import aiohttp
+import requests
 
 
-class SubwayStop:
-    def __init__(
-        self,
-        id: str,
-        code: str,
-        name: str,
-        description: str,
-        latitude: float,
-        longitude: float,
-        zone: int,
-        url: str,
-        location_type: int,
-        parent_station: int,
-    ) -> None:
-        self.id = id
-        self.code = code
-        self.name = name
-        self.description = description
-        self.latitude = latitude
-        self.longitude = longitude
-        self.zone = zone
-        self.url = url
-        self.location_type = location_type
-        self.parent_station = parent_station
-
-    def __eq__(self, other):
-        return self.id == other.id
-
-    def __hash__(self):
-        return hash(self.id)
+FEED_BASE_URL = 'https://datamine.mta.info/mta_esi.php?key={key}&feed_id={feed_id}'
 
 
-class RealTimeData:
+async def fetch_feed_async(feed_id, key, loop=None):
+    url = FEED_BASE_URL.format(key=key, feed_id=feed_id)
+
+    # TODO
+    filename = None
+
+    return parse_feed(filename)
+
+def fetch_feed_sync(feed_id, key):
+    url = FEED_BASE_URL.format(key=key, feed_id=feed_id)
+
+    # TODO
+    filename = None
+
+    return parse_feed(filename)
+
+
+def parse_feed(filename):
+    feed = realtime.FeedMessage()
+    with open(filename, 'rb') as file:
+        content = file.read()
+        feed.ParseFromString(content)
+        return entity
+
+
+class Subway(abc.ABC):
+    def __init__(self, stops, schedule):
+        self.stops = stops
+        self.schedule = schedule
+
+
+class A(Subway):
+    pass
+
+
+class C(Subway):
+    pass
+
+
+class E(Subway):
     pass
