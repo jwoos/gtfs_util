@@ -1,5 +1,6 @@
 #! /usr/bin/env sh
 
-wget --directory-prefix=gtfs https://developers.google.com/transit/gtfs-realtime/gtfs-realtime.proto
+wget --output-document=src/gtfs/realtime.proto \
+	https://developers.google.com/transit/gtfs-realtime/gtfs-realtime.proto
 
-protoc -I=gtfs --python_out=gtfs gtfs/gtfs-realtime.proto
+protoc -I=src/gtfs --python_out=src/gtfs src/gtfs/realtime.proto
