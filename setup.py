@@ -9,4 +9,9 @@ setuptools.setup(
     author='Jun Woo Shin',
     license='MIT',
     packages=setuptools.find_packages(),
+    install_requires=[
+        'aiohttp',
+        'protobuf',
+        'uvloop',
+    ]
 )
