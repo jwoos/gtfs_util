@@ -1,7 +1,16 @@
+import abc
+from collections import namedtuple
 from csv import DictReader
 
 
-class Stop(namedtuple(
+class BaseCommon(abc.ABC):
+    @staticmethod
+    @abc.abstractmethod
+    def parse(filename):
+        raise NotImplementedError()
+
+
+class Stop(BaseCommo, namedtuple(
     'Stop',
     [
         'id',
@@ -29,26 +38,26 @@ class Stop(namedtuple(
         'parent_station': 'parent_station',
     }
 
+    @staticmethod
+    def parse(filename):
+        with open(filename, 'r') as file:
+            reader = DictReader(file)
+            return {
+                row['stop_id']: Stop(**{
+                    k: row[v] for k, v in Stop.MAPPING.items()
+                }) for row in reader
+            }
 
-def parse_stops(filename):
-    with open(filename, 'r') as file:
-        reader = DictReader(file)
-        return {
-            row['stop_id']: Stop(**{
-                k: row[v] for k, v in Stop.MAPPING.items()
-            }) for row in reader
-        }
 
-
-class StopTime(namedtuple(
+class StopTime(BaseCommon, namedtuple(
     'StopTime',
     [
-        'id',
+        'trip_id',
         'arrival_time',
         'departure_time',
-        'stop_id',
-        'stop_sequence',
-        'stop_headsign',
+        'id',
+        'sequence',
+        'headsign',
         'pickup_type',
         'drop_off_type',
         'shape_dist_traveled',
@@ -58,13 +67,56 @@ class StopTime(namedtuple(
         'id': 'trip_id',
         'arrival_time': 'arrival_time',
         'departure_time': 'departure_time',
-        'stop_id': 'stop_id',
-        'stop_sequence': 'stop_sequence',
-        'stop_headsign': 'stop_headsign',
+        'id': 'stop_id',
+        'sequence': 'stop_sequence',
+        'headsign': 'stop_headsign',
         'pickup_type': 'pickup_type',
         'drop_off_type': 'drop_off_type',
         'shape_dist_traveled': 'shape_dist_traveled',
     }
+
+    @staticmethod
+    def parse(filename):
+        with open(filename, 'r') as file:
+            reader = DictReader(file)
+            return {
+                row['stop_id']: StopTime(**{
+                    k: row[v] for k, v in StopTime.MAPPING.items()
+                }) for row in reader
+            }
+
+
+class Trip(BaseCommon, namedtuple(
+    'Trip',
+    [
+        'route_id',
+        'service_id',
+        'id',
+        'headsign',
+        'direction_id',
+        'block_id',
+        'shape_id',
+    ]
+)):
+    MAPPING = {
+        'route_id': 'route_id',
+        'sevice_id': 'service_id',
+        'id': 'trip_id',
+        'headsign': 'trip_headsign',
+        'direction_id': 'direction_id',
+        'block_id': 'block_id',
+        'shape_id': 'shape_id',
+    }
+
+    @staticmethod
+    def parse(filename):
+        with open(filename, 'r') as file:
+            reader = DictReader(file)
+            return {
+                row['trip_id']: Trip(**{
+                    k: row[v] for k, v in StopTime.MAPPING.items()
+                }) for row in reader
+            }
 
 
 class Route(namedtuple(
@@ -83,7 +135,7 @@ class Route(namedtuple(
 )):
     MAPPING = {
         'id': 'route_id',
-        'agency_id': 'agency_id':
+        'agency_id': 'agency_id',
         'short_name': 'route_short_name',
         'long_name': 'route_long_name',
         'description': 'route_desc',

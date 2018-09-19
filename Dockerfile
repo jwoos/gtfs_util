@@ -6,4 +6,8 @@ RUN apt update && \
 
 COPY . /opt
 
+WORKDIR /opt
+
+RUN pip install -r requirements.txt
+
 CMD bash
