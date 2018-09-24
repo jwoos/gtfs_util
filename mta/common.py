@@ -10,7 +10,45 @@ class BaseCommon(abc.ABC):
         raise NotImplementedError()
 
 
-class Stop(BaseCommo, namedtuple(
+class Route(namedtuple(
+    'Route',
+    [
+        'id',
+        'agency_id',
+        'short_name',
+        'long_name',
+        'description',
+        'type',
+        'url',
+        'color',
+        'text_color',
+    ],
+)):
+    MAPPING = {
+        'id': 'route_id',
+        'agency_id': 'agency_id',
+        'short_name': 'route_short_name',
+        'long_name': 'route_long_name',
+        'description': 'route_desc',
+        'type': 'route_type',
+        'url': 'route_url',
+        'color': 'route_color',
+        'text_color': 'route_text_color',
+    }
+
+
+    @staticmethod
+    def parse_routes(filename):
+        with open(filename, 'r') as file:
+            reader = DictReader(file)
+            return {
+                row['route_id']: Route(**{
+                    k: row[v] for k, v in Route.MAPPING.items()
+                }) for row in reader
+            }
+
+
+class Stop(BaseCommon, namedtuple(
     'Stop',
     [
         'id',
@@ -117,40 +155,3 @@ class Trip(BaseCommon, namedtuple(
                     k: row[v] for k, v in StopTime.MAPPING.items()
                 }) for row in reader
             }
-
-
-class Route(namedtuple(
-    'Route',
-    [
-        'id',
-        'agency_id',
-        'short_name',
-        'long_name',
-        'description',
-        'type',
-        'url',
-        'color',
-        'text_color',
-    ],
-)):
-    MAPPING = {
-        'id': 'route_id',
-        'agency_id': 'agency_id',
-        'short_name': 'route_short_name',
-        'long_name': 'route_long_name',
-        'description': 'route_desc',
-        'type': 'route_type',
-        'url': 'route_url',
-        'color': 'route_color',
-        'text_color': 'route_text_color',
-    }
-
-
-def parse_routes(filename):
-    with open(filename, 'r') as file:
-        reader = DictReader(file)
-        return {
-            row['route_id']: Route(**{
-                k: row[v] for k, v in Route.MAPPING.items()
-            }) for row in reader
-        }
