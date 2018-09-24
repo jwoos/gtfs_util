@@ -3,15 +3,24 @@ from collections import namedtuple
 from csv import DictReader
 
 
-class BaseCommon(abc.ABC):
+def persist(elems):
+    for elem in elems:
+        elem.persist()
+
+
+class BaseDiscreteCommon(abc.ABC):
     @staticmethod
     @abc.abstractmethod
     def parse(filename):
         raise NotImplementedError()
 
+    @abc.abstractmethod
+    def persist(self):
+        raise NotImplementedError()
 
-class Route(namedtuple(
-    'Route',
+
+class DiscreteRoute(namedtuple(
+    'DiscreteRoute',
     [
         'id',
         'agency_id',
@@ -36,20 +45,22 @@ class Route(namedtuple(
         'text_color': 'route_text_color',
     }
 
-
     @staticmethod
-    def parse_routes(filename):
+    def parse(filename):
         with open(filename, 'r') as file:
             reader = DictReader(file)
             return {
-                row['route_id']: Route(**{
-                    k: row[v] for k, v in Route.MAPPING.items()
+                row['route_id']: DiscreteRoute(**{
+                    k: row[v] for k, v in DiscreteRoute.MAPPING.items()
                 }) for row in reader
             }
 
+    def persist(self):
+        pass
 
-class Stop(BaseCommon, namedtuple(
-    'Stop',
+
+class DiscreteStop(BaseDiscreteCommon, namedtuple(
+    'DiscreteStop',
     [
         'id',
         'code',
@@ -81,14 +92,14 @@ class Stop(BaseCommon, namedtuple(
         with open(filename, 'r') as file:
             reader = DictReader(file)
             return {
-                row['stop_id']: Stop(**{
-                    k: row[v] for k, v in Stop.MAPPING.items()
+                row['stop_id']: DiscreteStop(**{
+                    k: row[v] for k, v in DiscreteStop.MAPPING.items()
                 }) for row in reader
             }
 
 
-class StopTime(BaseCommon, namedtuple(
-    'StopTime',
+class DiscreteStopTime(BaseDiscreteCommon, namedtuple(
+    'DiscreteStopTime',
     [
         'trip_id',
         'arrival_time',
@@ -118,14 +129,14 @@ class StopTime(BaseCommon, namedtuple(
         with open(filename, 'r') as file:
             reader = DictReader(file)
             return {
-                row['stop_id']: StopTime(**{
-                    k: row[v] for k, v in StopTime.MAPPING.items()
+                row['stop_id']: DiscreteStopTime(**{
+                    k: row[v] for k, v in DiscreteStopTime.MAPPING.items()
                 }) for row in reader
             }
 
 
-class Trip(BaseCommon, namedtuple(
-    'Trip',
+class DiscreteTrip(BaseDiscreteCommon, namedtuple(
+    'DiscreteTrip',
     [
         'route_id',
         'service_id',
@@ -151,7 +162,7 @@ class Trip(BaseCommon, namedtuple(
         with open(filename, 'r') as file:
             reader = DictReader(file)
             return {
-                row['trip_id']: Trip(**{
-                    k: row[v] for k, v in StopTime.MAPPING.items()
+                row['trip_id']: DiscreteTrip(**{
+                    k: row[v] for k, v in DiscreteTrip.MAPPING.items()
                 }) for row in reader
             }
