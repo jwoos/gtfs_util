@@ -1,8 +1,9 @@
-# MTA
+# GTFS Parser
 
 ## What?
+This is a library to work with GTFS data.
 
-This is a Python library to provide access to MTA's API. It will try to accommodate your needs by doing as little or as much work you want it to do.
+~This is a Python library to provide access to MTA's API. It will try to accommodate your needs by doing as little or as much work you want it to do.~
 
 The general high level functionality is as follows:
 
