@@ -1,6 +1,9 @@
 import abc
 
 
-class Base:
-    def __init__(self):
-        pass
+class Base(abc.ABC):
+    def __init__(self, *args, **kwargs):
+        self.arsg = args
+
+        for k, v in kwargs.items():
+            setattr(self, k, v)
