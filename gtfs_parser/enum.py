@@ -29,7 +29,7 @@ class RouteType(Enum):
     FUNICULAR = 7
 
 
-class DirectionID(Enum):
+class Direction(Enum):
     A = 0
     B = 1
 
