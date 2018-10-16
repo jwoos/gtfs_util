@@ -1,8 +1,7 @@
-from sqlalchemy import Column
-from sqlalchemy.types import String, Integer, DECIMAL, Enum
+from sqlalchemy import Column, types, ForeignKey
 
 from gtfs_parser.models.base import Base
-from gtfs_parser.enum import LocationType, ParentStation, WheelchairBoarding
+from gtfs_parser.enum import PickupType, DropoffType
 
 
 MAPPING = {
@@ -18,6 +17,66 @@ class StopTime(Base):
 
     id = Column(
         'id',
-        String,
+        types.String,
         primary_key=True,
+    )
+
+    trip_id = Column(
+        'trip_id',
+        types.String,
+        nullable=False,
+    )
+
+    arrival_time = Column(
+        'arrival_time',
+        types.Datetime,
+        nullable=False,
+    )
+
+    departure_time = Column(
+        'departure_time',
+        types.Datetime,
+        nullable=False,
+    )
+
+    stop_id = Column(
+        'stop_id',
+        types.String,
+        nullable=False,
+    )
+
+    stop_sequence = Column(
+        'stop_sequence',
+        types.Integer,
+        nullable=False,
+    )
+
+    stop_headsign = Column(
+        'stop_headsign',
+        types.String,
+        nullable=True,
+    )
+
+    pickup_type = Column(
+        'pickup_type',
+        types.Enum(PickupType),
+        nullable=True,
+    )
+
+    dropoff_type = Column(
+        'dropoff_type',
+        types.Enum(DropoffType),
+        nullable=True,
+    )
+
+    shape_dist_traveled = Column(
+        'shape_dist_traveled',
+        types.Float,
+        nullable=True,
+    )
+
+    timepoint = Column(
+        'timepoint',
+        types.Enum(TimePoint),
+        nullable=True,
     )
