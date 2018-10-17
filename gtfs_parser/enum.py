@@ -69,3 +69,8 @@ class TransferType(Enum):
     TIMED = 1
     MINIMUM_WAIT = 2
     NOT_AVAILABLE = 3
+
+
+class CalendarAvailable(Enum):
+    NOT_AVAILABLE = 0
+    AVAILABLE = 1
