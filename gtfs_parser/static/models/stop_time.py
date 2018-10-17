@@ -1,6 +1,6 @@
 from sqlalchemy import Column, types, ForeignKey
 
-from gtfs_parser.models.base import Base
+from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import PickupType, DropoffType
 
 

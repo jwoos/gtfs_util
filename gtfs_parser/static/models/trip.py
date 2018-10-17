@@ -1,7 +1,7 @@
 from sqlalchemy import Column
 from sqlalchemy.types import String, Integer, DECIMAL, Enum
 
-from gtfs_parser.models.base import Base
+from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import BikeAllowed, WheelchairBoarding
 
 
