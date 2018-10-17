@@ -13,6 +13,14 @@ def transformer(original):
     return MAPPING.get(original, None) or original.strip('agency_')
 
 
+def jsonify(tup):
+    pass
+
+
+def jsonify_batch(tup):
+    pass
+
+
 class Agency(Base):
     __tablename__ = 'agency'
 

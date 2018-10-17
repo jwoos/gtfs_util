@@ -9,6 +9,7 @@ aiohttp = "*"
 protobuf = "*"
 requests = "*"
 SQLAlchemy = "*"
+ipython = "*"
 
 [dev-packages]
 
