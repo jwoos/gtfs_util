@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2e0c7f2f47be0865a322b18da1cc96f383987d5e97acd6a048424395bead9921"
+            "sha256": "2f4edf65438d5fa1ebb443af706eac49c28450d987b9a26315c2f1e690f41d49"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -86,6 +86,13 @@
                 "sha256:c39efa13fbdeb4506c476c9b3babf6a718da943dab7811c206005a4a956c080c"
             ],
             "version": "==4.3.0"
+        },
+        "gtfs-realtime-bindings": {
+            "hashes": [
+                "sha256:3df928919de078acd986fad5d9c9b58978e12f1d0de1b4434fea3c263ac0d43a"
+            ],
+            "index": "pypi",
+            "version": "==0.0.5"
         },
         "idna": {
             "hashes": [
