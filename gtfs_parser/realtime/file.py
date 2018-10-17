@@ -9,4 +9,17 @@ def load(filename, model=False):
     with open(filename, 'rb') as f:
         feed = gtfs_realtime_pb2.FeedMessage()
         feed.ParseFromString(f.read())
-        return MessageToDict(feed)
+
+        raw_data = MessageToDict(feed)
+        data = {
+            'trip_update': [],
+            'vehicle': [],
+        }
+
+        for inner_id, inner_data in raw_data.items():
+            if 'trip_update' in inner_data:
+                data['trip_update'].append(inner_data)
+            else:
+                data['vehicle'].append(inner_data)
+
+        return data
