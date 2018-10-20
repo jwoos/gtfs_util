@@ -1,6 +1,13 @@
-from gtfs_parser.realtime.models import Base
+from gtfs_parser.realtime.models.base import Base
+
+from collections import namedtuple
 
 
-class TripUpdate(Base):
-    def __init__(self):
-        pass
+class TripUpdate(namedtuple(
+    'TripUpdate',
+    [
+        'trip',
+        'stop_time_update',
+    ]
+)):
+    pass

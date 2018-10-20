@@ -1,25 +1,71 @@
+from gtfs_parser.realtime.models import (
+    alert,
+    trip_update,
+    vehicle
+)
+from gtfs_parser import util
+
 from google.protobuf.json_format import MessageToDict
 from google.transit import gtfs_realtime_pb2
 
 
 def load(filename, model=False):
-    if model:
-        raise NotImplementedError()
-
     with open(filename, 'rb') as f:
         feed = gtfs_realtime_pb2.FeedMessage()
         feed.ParseFromString(f.read())
 
-        raw_data = MessageToDict(feed)
+    raw_data = MessageToDict(feed)
+    data = {
+        'trip_update': [],
+        'vehicle': [],
+        'alert': [],
+    }
+
+    for inner_data in raw_data['entity']:
+        normalized_inner_data = normalize_names(inner_data)
+
+        if 'tripUpdate' in inner_data:
+            if model:
+                data['trip_update'].append(
+                    trip_update.TripUpdate(**normalized_inner_data['trip_update'])
+                )
+            else:
+                data['trip_update'].append(normalized_inner_data['trip_update'])
+
+        if 'alert' in normalized_inner_data:
+            if model:
+                data['alert'].append(
+                    alert.Alert(**normalized_inner_data['alert'])
+                )
+            else:
+                data['alert'].append(normalized_inner_data['alert'])
+
+        if 'vehicle' in normalized_inner_data:
+            if model:
+                data['vehicle'].append(
+                    vehicle.Vehicle(**normalized_inner_data['vehicle'])
+                )
+            else:
+                data['vehicle'].append(normalized_inner_data['vehicle'])
+
+    return normalize_names(data)
+
+
+def normalize_names(raw_data):
+    data = None
+
+    if isinstance(raw_data, dict):
         data = {
-            'trip_update': [],
-            'vehicle': [],
+            util.camel_to_snake(k): normalize_names(v)
+            for k, v in raw_data.items()
         }
 
-        for inner_id, inner_data in raw_data.items():
-            if 'trip_update' in inner_data:
-                data['trip_update'].append(inner_data)
-            else:
-                data['vehicle'].append(inner_data)
+    elif isinstance(raw_data, list):
+        data = [
+            normalize_names(x) for x in raw_data
+        ]
 
-        return data
+    else:
+        data = raw_data
+
+    return data
