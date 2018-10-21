@@ -1,19 +1,32 @@
-from sqlalchemy import Column, types
+# calendar.txt
+
+from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
-from gtfs_parser.enum import CalendarAvailable
 
 
-MAPPING = {
-}
+class Service(Base):
+    __tablename__ = 'service'
+    __table_args__ = ()
 
+    PREFIX = 'calendar_'
 
-def transformer(original):
-    return MAPPING.get(original, None) or original.strip('calendar_')
+    NAME_MAPPING = {}
+    DATA_MAPPING = {}
 
+    FIELDS = (
+        'id',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+        'start_date',
+        'end_date',
+    )
 
-class Calendar(Base):
-    __tablename__ = 'calendar'
 
     id = Column(
         'id',
@@ -23,43 +36,43 @@ class Calendar(Base):
 
     monday = Column(
         'monday',
-        types.Enum(CalendarAvailable),
+        types.Bool,
         nullable=False,
     )
 
     tuesday = Column(
         'tuesday',
-        types.Enum(CalendarAvailable),
+        types.Bool,
         nullable=False,
     )
 
     wednesday = Column(
         'wednesday',
-        types.Enum(CalendarAvailable),
+        types.Bool,
         nullable=False,
     )
 
     thursday = Column(
         'thursday',
-        types.Enum(CalendarAvailable),
+        types.Bool,
         nullable=False,
     )
 
     friday = Column(
         'friday',
-        types.Enum(CalendarAvailable),
+        types.Bool,
         nullable=False,
     )
 
     saturday = Column(
         'saturday',
-        types.Enum(CalendarAvailable),
+        types.Bool,
         nullable=False,
     )
 
     sunday = Column(
         'sunday',
-        types.Enum(CalendarAvailable),
+        types.Bool,
         nullable=False,
     )
 

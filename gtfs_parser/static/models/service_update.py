@@ -1,21 +1,26 @@
-from sqlalchemy import Column, types, UniqueConstraint
+# calendar_dates.txt
+
+from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import ExceptionType
 
 
-MAPPING = {
-}
-
-
-def transformer(original):
-    return MAPPING.get(original, None) or original.strip('calendar_')
-
-
-class CalendarDate(Base):
-    __tablename__ = 'calendar_date'
+class ServiceUpdate(Base):
+    __tablename__ = 'service_update'
     __table_args__ = (
-        UniqueConstraint('service_id', 'exception_type'),
+        schema.UniqueConstraint('service_id', 'exception_type'),
+    )
+
+    PREFIX = 'calendar_date_'
+
+    NAME_MAPPING = {}
+    DATA_MAPPING = {}
+
+    FIELDS = (
+        'id',
+        'service_id',
+        'exception_type',
     )
 
     id = Column(

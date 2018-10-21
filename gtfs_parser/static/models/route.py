@@ -1,75 +1,93 @@
-from sqlalchemy import Column
-from sqlalchemy.types import String, Integer
+# routes.txt
+
+from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import RouteType
 
 
-MAPPING = {
-    'route_desc': 'description',
-}
-
-
-def transformer(original):
-    return MAPPING.get(original, None) or original.strip('route_')
-
-
 class Route(Base):
     __tablename__ = 'route'
+    __table_args__ = (
+        schema.ForeignKeyConstraint(['agency_id'], ['agency.id']),
+    )
+
+    PREFIX = 'route_'
+
+    NAME_MAPPING = {
+        'route_desc': 'description',
+    }
+    DATA_MAPPING = {}
+
+    FIELDS = (
+        'id',
+        'agency_id',
+        'short_name',
+        'long_name',
+        'description',
+        'type',
+        'url',
+        'color',
+        'text_color',
+        'sort_order',
+    )
 
     id = Column(
         'id',
-        String,
+        types.String,
         primary_key=True,
     )
 
     agency_id = Column(
         'agency_id',
-        String,
+        types.String,
         nullable=True,
     )
 
     short_name = Column(
         'short_name',
-        String,
+        types.String,
+        nullable=False,
     )
 
     long_name = Column(
         'long_name',
-        String,
+        types.String,
+        nullable=False,
     )
 
     description = Column(
         'description',
-        String,
+        types.String,
         nullable=True,
     )
 
     type = Column(
         'type',
-        Enum(RouteType)
+        types.Enum(RouteType),
+        nullable=False
     )
 
     url = Column(
         'url',
-        String,
+        types.String,
         nullable=True,
     )
 
     color = Column(
         'color',
-        String,
+        types.String,
         nullable=True,
     )
 
     text_color = Column(
         'text_color',
-        String,
+        types.String,
         nullable=True,
     )
 
     sort_order = Column(
         'sort_order',
-        Integer,
+        types.Integer,
         nullable=True,
     )

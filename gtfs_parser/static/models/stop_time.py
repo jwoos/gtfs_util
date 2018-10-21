@@ -1,19 +1,38 @@
-from sqlalchemy import Column, types, ForeignKey
+# stop_times.txt
+
+from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import PickupType, DropoffType
 
 
-MAPPING = {
-}
-
-
-def transformer(original):
-    return MAPPING.get(original, None) or original.strip('stop_')
-
-
 class StopTime(Base):
     __tablename__ = 'stop_time'
+    __table_args__ = (
+        schema.ForeignKeyConstraint(['trip_id'], ['trip.id']),
+        schema.ForeignKeyConstraint(['stop_id'], ['stop.id']),
+    )
+
+    PREFIX = 'stop_time_'
+
+    NAME_MAPPING = {
+        'shape_dist_traveled': 'shape_distance_traveled',
+    }
+    DATA_MAPPING = {}
+
+    FIELDS = (
+        'id',
+        'trip_id',
+        'arrival_time',
+        'departure_time',
+        'stop_id',
+        'stop_sequence',
+        'stop_headsign',
+        'pickup_type',
+        'dropoff_type',
+        'shape_distance_traveled',
+        'timepoint',
+    )
 
     id = Column(
         'id',
@@ -69,8 +88,8 @@ class StopTime(Base):
         nullable=True,
     )
 
-    shape_dist_traveled = Column(
-        'shape_dist_traveled',
+    shape_distance_traveled = Column(
+        'shape_distance_traveled',
         types.Float,
         nullable=True,
     )

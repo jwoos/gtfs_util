@@ -1,70 +1,75 @@
-from sqlalchemy import Column
-from sqlalchemy.types import String, Integer
+# agency.txt
+
+from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
+from gtfs_parser.model import MixIn
 
 
-MAPPING = {
-    'agency_lang': 'language',
-}
-
-
-def transformer(original):
-    return MAPPING.get(original, None) or original.strip('agency_')
-
-
-def jsonify(tup):
-    pass
-
-
-def jsonify_batch(tup):
-    pass
-
-
-class Agency(Base):
+class Agency(Base, MixIn):
     __tablename__ = 'agency'
+    __table_args__ = ()
+
+    PREFIX = 'agency_'
+
+    NAME_MAPPING = {}
+    DATA_MAPPING = {}
+
+    FIELDS = (
+        'id',
+        'name',
+        'url',
+        'timezone',
+        'language',
+        'phone',
+        'fare_url',
+        'email',
+    )
 
     id = Column(
         'id',
-        String,
+        types.String,
         primary_key=True,
     )
 
     name = Column(
         'name',
-        String,
+        types.String,
+        nullable=False,
     )
 
     url = Column(
         'url',
-        String,
+        types.String,
+        nullable=False,
     )
 
     timezone = Column(
         'timezone',
-        String,
+        types.String,
+        nullable=False,
     )
 
     language= Column(
         'language',
-        String,
+        types.String,
         nullable=True,
     )
 
     phone = Column(
         'phone',
-        String,
+        types.String,
         nullable=True,
     )
 
     fare_url = Column(
         'fare_url',
-        String,
+        types.String,
         nullable=True,
     )
 
     email = Column(
         'email',
-        String,
+        types.String,
         nullable=True,
     )

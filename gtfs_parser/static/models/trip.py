@@ -1,75 +1,92 @@
-from sqlalchemy import Column
-from sqlalchemy.types import String, Integer, DECIMAL, Enum
+# trips.txt
+
+from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import BikeAllowed, WheelchairBoarding
 
 
-MAPPING = {
-}
-
-
-def transformer(original):
-    return MAPPING.get(original, None) or original.strip('trip_')
-
-
 class Trip(Base):
     __tablename__ = 'trip'
+    __table_args__ = (
+        schema.ForeignKeyConstraint(['route_id'], ['route.id']),
+        schema.ForeignKeyConstraint(['service_id'], ['calendar.id']),
+    )
+
+    PREFIX = 'trip_'
+
+    NAME_MAPPING = {}
+    DATA_MAPPING = {}
+
+    FIELDS = (
+        'id',
+        'route_id',
+        'service_id',
+        'headsign',
+        'short_name',
+        'direction',
+        'block_id',
+        'shape_id',
+        'wheelchar_accessible',
+        'bikes_allowed',
+    )
 
     id = Column(
         'id',
-        String,
+        types.String,
         primary_key=True,
     )
 
     route_id = Column(
         'route_id',
-        String,
+        types.String,
+        nullable=False,
     )
 
     service_id = Column(
         'service_id',
-        String,
+        types.String,
+        nullable=False,
     )
 
     headsign = Column(
         'headsign',
-        String,
+        types.String,
         nullable=True,
     )
 
     short_name = Column(
         'short_name',
-        String,
+        types.String,
         nullable=True,
     )
 
     direction = Column(
         'direction',
-        Enum(Direction),
+        types.Enum(Direction),
         nullable=True,
     )
 
     block_id = Column(
         'block_id',
-        String,
+        types.String,
         nullable=True,
     )
 
     shape_id = Column(
         'shape_id',
-        String,
+        types.String,
         nullable=True,
     )
 
     wheelchar_accessible = Column(
         'wheelchar_accessible',
-        Enum(WheelchairBoarding),
+        types.Enum(WheelchairBoarding),
         nullable=True,
     )
 
     bikes_allowed = column(
         'bikes_allowed',
-        Enum(BikeAllowed),
+        types.Enum(BikeAllowed),
         nullable=True,
     )

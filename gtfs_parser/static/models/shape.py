@@ -1,23 +1,32 @@
+# shapes.txt
+
 from sqlalchemy import Column, types, UniqueConstraint
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import ExceptionType
 
 
-MAPPING = {
-    'shape_pt_lat': 'point_latitude',
-    'shape_pt_lon': 'point_longitude',
-    'shape_dist_traveled': 'distance_traveled',
-}
-
-
-def transformer(original):
-    return MAPPING.get(original, None) or original.strip('shape_')
-
-
 class Shape(Base):
     __tablename__ = 'shape'
     __table_args__ = ()
+
+    PREFIX = 'shape_'
+
+    NAME_MAPPING = {
+        'shape_pt_lat': 'latitude',
+        'shape_pt_lon': 'longitude',
+        'shape_pt_sequence': 'sequence'
+        'shape_dist_traveled': 'distance_traveled',
+    }
+    DATA_MAPPING = {}
+
+    FIELDS = (
+        'id',
+        'point_latitude',
+        'point_longitude',
+        'distance_traveled',
+        ''
+    )
 
     id = Column(
         'id',
@@ -25,8 +34,8 @@ class Shape(Base):
         primary_key=True,
     )
 
-    point_latitude = Column(
-        'point_latitude',
+    latitude = Column(
+        'latitude',
         types.DECIMAL(
             precision=9,
             decimal_return_scale=6,
@@ -35,13 +44,19 @@ class Shape(Base):
         nullable=False,
     )
 
-    point_longitude = Column(
-        'point_longitude',
+    longitude = Column(
+        'longitude',
         types.DECIMAL(
             precision=9,
             decimal_return_scale=6,
             asdecimal=True,
         ),
+        nullable=False,
+    )
+
+    sequence = Column(
+        'sequence',
+        types.Integer,
         nullable=False,
     )
 

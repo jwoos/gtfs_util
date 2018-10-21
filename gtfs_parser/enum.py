@@ -7,11 +7,6 @@ class LocationType(Enum):
     STATION_ENTRANCE = 2
 
 
-class ParentStation(Enum):
-    STOP = 0
-    STATION = 1
-
-
 class WheelchairBoarding(Enum):
     NO_INFORMATION = 0
     ACCESSIBLE = 1
@@ -29,17 +24,6 @@ class RouteType(Enum):
     FUNICULAR = 7
 
 
-class Direction(Enum):
-    A = 0
-    B = 1
-
-
-class BikeAllowed(Enum):
-    NO_INFORMATION = 0
-    ALLOWED = 1
-    NOT_ALLOWED = 2
-
-
 class PickupType(Enum):
     SCHEDULED = 0
     NOT_AVAILABLE = 1
@@ -54,11 +38,6 @@ class DropoffType(Enum):
     COORDINATE = 3
 
 
-class TimePoint(Enum):
-    APPROXIMATE = 0
-    EXACT = 1
-
-
 class ExceptionType(Enum):
     ADDED = 1
     REMOVED = 2
@@ -69,8 +48,3 @@ class TransferType(Enum):
     TIMED = 1
     MINIMUM_WAIT = 2
     NOT_AVAILABLE = 3
-
-
-class CalendarAvailable(Enum):
-    NOT_AVAILABLE = 0
-    AVAILABLE = 1
