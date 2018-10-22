@@ -10,7 +10,8 @@ class Trip(Base):
     __tablename__ = 'trip'
     __table_args__ = (
         schema.ForeignKeyConstraint(['route_id'], ['route.id']),
-        schema.ForeignKeyConstraint(['service_id'], ['calendar.id']),
+        schema.ForeignKeyConstraint(['service_id'], ['service.id']),
+        schema.ForeignKeyConstraint(['shape_id'], ['shape.id']),
     )
 
     PREFIX = 'trip_'

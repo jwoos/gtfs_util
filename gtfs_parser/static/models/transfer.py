@@ -8,17 +8,24 @@ from gtfs_parser.enum import TransferType
 
 class Transfer(Base):
     __tablename__ = 'transfer'
-    __table_args__ = ()
+    __table_args__ = (
+        ForeignKeyConstraint(['source_stop_id'], ['stop.id']),
+        ForeignKeyConstraint(['destination_stop_id'], ['stop.id']),
+    )
 
     PREFIX = 'transfer_'
 
     NAME_MAPPING = {
+        'from_stop_id': 'source_stop_id',
+        'to_stop_id': 'destination_stop_id',
         'min_transfer_time': 'minimum_time',
     }
     DATA_MAPPING = {}
 
     FIELDS = (
         'id',
+        'source_stop_id',
+        'destination_stop_id',
         'type',
         'minimum_time',
     )
@@ -27,6 +34,18 @@ class Transfer(Base):
         'id',
         types.Integer,
         primary_key=True,
+    )
+
+    source_stop_id = Column(
+        'source_stop_id',
+        types.String,
+        nullable=False,
+    )
+
+    destination_stop_id = Column(
+        'destination_stop_id',
+        types.String,
+        nullable=False,
     )
 
     type = Column(
