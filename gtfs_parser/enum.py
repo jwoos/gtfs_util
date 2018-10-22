@@ -7,12 +7,6 @@ class LocationType(Enum):
     STATION_ENTRANCE = 2
 
 
-class WheelchairBoarding(Enum):
-    NO_INFORMATION = 0
-    ACCESSIBLE = 1
-    NOT_ACCESSIBLE = 2
-
-
 class RouteType(Enum):
     TRAM = 0
     SUBWAY = 1

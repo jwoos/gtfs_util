@@ -36,43 +36,43 @@ class Service(Base):
 
     monday = Column(
         'monday',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 
     tuesday = Column(
         'tuesday',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 
     wednesday = Column(
         'wednesday',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 
     thursday = Column(
         'thursday',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 
     friday = Column(
         'friday',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 
     saturday = Column(
         'saturday',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 
     sunday = Column(
         'sunday',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 

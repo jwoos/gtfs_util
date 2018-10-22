@@ -42,13 +42,13 @@ class Frequency(Base):
 
     start_time = Column(
         'start_time',
-        types.Datetime,
+        types.DATETIME,
         nullable=False,
     )
 
     end_time = Column(
         'end_time',
-        types.Datetime,
+        types.DATETIME,
         nullable=False,
     )
 
@@ -60,6 +60,6 @@ class Frequency(Base):
 
     exact_times = Column(
         'exact_times',
-        types.Bool,
+        types.BOOLEAN,
         nullable=True,
     )

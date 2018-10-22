@@ -15,7 +15,7 @@ class Shape(Base):
     NAME_MAPPING = {
         'shape_pt_lat': 'latitude',
         'shape_pt_lon': 'longitude',
-        'shape_pt_sequence': 'sequence'
+        'shape_pt_sequence': 'sequence',
         'shape_dist_traveled': 'distance_traveled',
     }
     DATA_MAPPING = {}

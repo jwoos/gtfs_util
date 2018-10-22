@@ -48,13 +48,13 @@ class StopTime(Base):
 
     arrival_time = Column(
         'arrival_time',
-        types.Datetime,
+        types.DATETIME,
         nullable=False,
     )
 
     departure_time = Column(
         'departure_time',
-        types.Datetime,
+        types.DATETIME,
         nullable=False,
     )
 
@@ -96,6 +96,6 @@ class StopTime(Base):
 
     timepoint = Column(
         'timepoint',
-        types.Enum(TimePoint),
+        types.BOOLEAN,
         nullable=True,
     )

@@ -1,6 +1,6 @@
 # stops.txt
 
-from sqlalchemy import Column, tyoes, schema
+from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import LocationType
@@ -89,7 +89,7 @@ class Stop(Base):
 
     parent_station = Column(
         'parent_station',
-        types.Bool,
+        types.BOOLEAN,
         nullable=True,
     )
 
@@ -101,6 +101,6 @@ class Stop(Base):
 
     wheelchair_boarding = Column(
         'wheelchair_boarding',
-        types.Enum(WheelchairBoarding),
+        types.BOOLEAN,
         nullable=True,
     )

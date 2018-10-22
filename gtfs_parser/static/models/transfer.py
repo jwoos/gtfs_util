@@ -9,8 +9,8 @@ from gtfs_parser.enum import TransferType
 class Transfer(Base):
     __tablename__ = 'transfer'
     __table_args__ = (
-        ForeignKeyConstraint(['source_stop_id'], ['stop.id']),
-        ForeignKeyConstraint(['destination_stop_id'], ['stop.id']),
+        schema.ForeignKeyConstraint(['source_stop_id'], ['stop.id']),
+        schema.ForeignKeyConstraint(['destination_stop_id'], ['stop.id']),
     )
 
     PREFIX = 'transfer_'

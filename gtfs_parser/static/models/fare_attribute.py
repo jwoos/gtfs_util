@@ -47,7 +47,7 @@ class Fare(Base, MixIn):
 
     payment_method = Column(
         'payment_method',
-        types.Bool,
+        types.BOOLEAN,
         nullable=False,
     )
 

@@ -3,7 +3,6 @@
 from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
-from gtfs_parser.enum import BikeAllowed, WheelchairBoarding
 
 
 class Trip(Base):
@@ -64,7 +63,7 @@ class Trip(Base):
 
     direction = Column(
         'direction',
-        types.Enum(Direction),
+        types.BOOLEAN,
         nullable=True,
     )
 
@@ -82,12 +81,12 @@ class Trip(Base):
 
     wheelchar_accessible = Column(
         'wheelchar_accessible',
-        types.Enum(WheelchairBoarding),
+        types.BOOLEAN,
         nullable=True,
     )
 
-    bikes_allowed = column(
+    bikes_allowed = Column(
         'bikes_allowed',
-        types.Enum(BikeAllowed),
+        types.BOOLEAN,
         nullable=True,
     )

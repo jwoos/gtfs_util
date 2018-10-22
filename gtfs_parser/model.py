@@ -1,7 +1,8 @@
 import abc
 
 
-class MixIn(abc.ABC):
+# class MixIn(abc.ABC):
+class MixIn:
     PREFIX = ''
 
     NAME_MAPPING = {}
