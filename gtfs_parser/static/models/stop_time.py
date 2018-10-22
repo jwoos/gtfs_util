@@ -3,7 +3,7 @@
 from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
-from gtfs_parser.enum import PickupType, DropoffType
+from gtfs_parser.enum import PickupDropOffType
 
 
 class StopTime(Base):
@@ -17,8 +17,11 @@ class StopTime(Base):
 
     NAME_MAPPING = {
         'shape_dist_traveled': 'shape_distance_traveled',
+        'timepoint': 'exact_times',
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'exact_times': lambda x: (x == 1) or (x is None)
+    }
 
     FIELDS = (
         'id',
@@ -31,7 +34,7 @@ class StopTime(Base):
         'pickup_type',
         'dropoff_type',
         'shape_distance_traveled',
-        'timepoint',
+        'exact_times',
     )
 
     id = Column(
@@ -78,13 +81,13 @@ class StopTime(Base):
 
     pickup_type = Column(
         'pickup_type',
-        types.Enum(PickupType),
+        types.Enum(PickupDropOffType),
         nullable=True,
     )
 
     dropoff_type = Column(
         'dropoff_type',
-        types.Enum(DropoffType),
+        types.Enum(PickupDropOffType),
         nullable=True,
     )
 
@@ -94,8 +97,8 @@ class StopTime(Base):
         nullable=True,
     )
 
-    timepoint = Column(
-        'timepoint',
+    exact_times = Column(
+        'exact_times',
         types.BOOLEAN,
         nullable=True,
     )

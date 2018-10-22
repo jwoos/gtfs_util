@@ -18,14 +18,7 @@ class RouteType(Enum):
     FUNICULAR = 7
 
 
-class PickupType(Enum):
-    SCHEDULED = 0
-    NOT_AVAILABLE = 1
-    PHONE = 2
-    COORDINATE = 3
-
-
-class DropoffType(Enum):
+class PickupDropOffType(Enum):
     SCHEDULED = 0
     NOT_AVAILABLE = 1
     PHONE = 2

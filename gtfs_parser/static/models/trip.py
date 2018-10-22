@@ -16,7 +16,10 @@ class Trip(Base):
     PREFIX = 'trip_'
 
     NAME_MAPPING = {}
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'wheelchair_accessible': lambda x: x == 1 if x != 0 else None,
+        'bikes_allowed': lambda x: x == 1 if x != 0 else None,
+    }
 
     FIELDS = (
         'id',
@@ -27,7 +30,7 @@ class Trip(Base):
         'direction',
         'block_id',
         'shape_id',
-        'wheelchar_accessible',
+        'wheelchair_accessible',
         'bikes_allowed',
     )
 
@@ -79,8 +82,8 @@ class Trip(Base):
         nullable=True,
     )
 
-    wheelchar_accessible = Column(
-        'wheelchar_accessible',
+    wheelchair_accessible = Column(
+        'wheelchair_accessible',
         types.BOOLEAN,
         nullable=True,
     )

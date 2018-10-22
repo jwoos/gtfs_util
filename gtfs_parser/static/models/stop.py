@@ -16,8 +16,12 @@ class Stop(Base):
         'stop_desc': 'description',
         'stop_lat': 'latitude',
         'stop_lon': 'longitude',
+        'wheelchair_boarding': 'wheelchair_accessible'
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'location_type': lambda x: x if x is not None else 0,
+        'wheelchair_accessible': lambda x: x == 1 if x != 0 else None,
+    }
 
     FIELDS = (
         'id',
@@ -30,7 +34,7 @@ class Stop(Base):
         'location_type',
         'parent_station',
         'timezone',
-        'wheelchair_boarding',
+        'wheelchair_accessible',
     )
 
     id = Column(
@@ -89,7 +93,7 @@ class Stop(Base):
 
     parent_station = Column(
         'parent_station',
-        types.BOOLEAN,
+        types.String,
         nullable=True,
     )
 
@@ -99,8 +103,8 @@ class Stop(Base):
         nullable=True,
     )
 
-    wheelchair_boarding = Column(
-        'wheelchair_boarding',
+    wheelchair_accessible = Column(
+        'wheelchair_accessible',
         types.BOOLEAN,
         nullable=True,
     )
