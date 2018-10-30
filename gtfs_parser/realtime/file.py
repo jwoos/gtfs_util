@@ -22,7 +22,7 @@ def load(filename, model=False):
     }
 
     for inner_data in raw_data['entity']:
-        normalized_inner_data = normalize_names(inner_data)
+        normalized_inner_data = normalize_data(normalize_names(inner_data))
 
         if 'tripUpdate' in inner_data:
             if model:
@@ -48,7 +48,7 @@ def load(filename, model=False):
             else:
                 data['vehicle'].append(normalized_inner_data['vehicle'])
 
-    return normalize_names(data)
+    return data
 
 
 def normalize_names(raw_data):
@@ -69,3 +69,7 @@ def normalize_names(raw_data):
         data = raw_data
 
     return data
+
+
+def normalize_data(raw_data):
+    return raw_data
