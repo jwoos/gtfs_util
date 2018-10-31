@@ -4,9 +4,10 @@ from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import LocationType
+from gtfs_parser.model import MixIn
 
 
-class Stop(Base):
+class Stop(Base, MixIn):
     __tablename__ = 'stop'
     __tablename__ = ()
 
@@ -34,6 +35,7 @@ class Stop(Base):
         'location_type',
         'parent_station',
         'timezone',
+        'url',
         'wheelchair_accessible',
     )
 
@@ -99,6 +101,12 @@ class Stop(Base):
 
     timezone = Column(
         'timezone',
+        types.String,
+        nullable=True,
+    )
+
+    url = Column(
+        'url',
         types.String,
         nullable=True,
     )

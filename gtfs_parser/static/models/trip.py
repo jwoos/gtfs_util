@@ -3,9 +3,10 @@
 from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
+from gtfs_parser.model import MixIn
 
 
-class Trip(Base):
+class Trip(Base, MixIn):
     __tablename__ = 'trip'
     __table_args__ = (
         schema.ForeignKeyConstraint(['route_id'], ['route.id']),
@@ -15,7 +16,9 @@ class Trip(Base):
 
     PREFIX = 'trip_'
 
-    NAME_MAPPING = {}
+    NAME_MAPPING = {
+        'direction_id': 'direction'
+    }
     DATA_MAPPING = {
         'wheelchair_accessible': lambda x: x == 1 if x != 0 else None,
         'bikes_allowed': lambda x: x == 1 if x != 0 else None,

@@ -4,9 +4,10 @@ from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import PickupDropOffType
+from gtfs_parser.model import MixIn
 
 
-class StopTime(Base):
+class StopTime(Base, MixIn):
     __tablename__ = 'stop_time'
     __table_args__ = (
         schema.ForeignKeyConstraint(['trip_id'], ['trip.id']),
@@ -16,6 +17,7 @@ class StopTime(Base):
     PREFIX = 'stop_time_'
 
     NAME_MAPPING = {
+        'drop_off_type': 'dropoff_type',
         'shape_dist_traveled': 'shape_distance_traveled',
         'timepoint': 'exact_times',
     }

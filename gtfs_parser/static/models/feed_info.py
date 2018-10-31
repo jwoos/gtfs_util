@@ -3,9 +3,10 @@
 from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
+from gtfs_parser.model import MixIn
 
 
-class Feed(Base):
+class Feed(Base, MixIn):
     __tablename__ = 'feed',
     __table_args__ = ()
 

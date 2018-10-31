@@ -3,9 +3,10 @@
 from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
+from gtfs_parser.model import MixIn
 
 
-class FareRule(Base):
+class FareRule(Base, MixIn):
     __tablename__ = 'fare_rule'
     __table_args__ = (
         schema.ForeignKeyConstraint(['fare_id'], ['fare.id']),

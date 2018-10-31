@@ -4,9 +4,10 @@ from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import TransferType
+from gtfs_parser.model import MixIn
 
 
-class Transfer(Base):
+class Transfer(Base, MixIn):
     __tablename__ = 'transfer'
     __table_args__ = (
         schema.ForeignKeyConstraint(['source_stop_id'], ['stop.id']),

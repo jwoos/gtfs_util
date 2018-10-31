@@ -51,6 +51,10 @@ def load(filename, model=False):
     return data
 
 
+def normalize(model, raw_data):
+    pass
+
+
 def normalize_names(raw_data):
     data = None
 

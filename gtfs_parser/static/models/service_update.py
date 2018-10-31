@@ -4,9 +4,10 @@ from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import ExceptionType
+from gtfs_parser.model import MixIn
 
 
-class ServiceUpdate(Base):
+class ServiceUpdate(Base, MixIn):
     __tablename__ = 'service_update'
     __table_args__ = (
         schema.UniqueConstraint('service_id', 'exception_type'),
@@ -19,6 +20,7 @@ class ServiceUpdate(Base):
 
     FIELDS = (
         'id',
+        'date',
         'service_id',
         'exception_type',
     )
@@ -27,6 +29,12 @@ class ServiceUpdate(Base):
         'id',
         types.Integer,
         primary_key=True,
+    )
+
+    date = Column(
+        'date',
+        types.DATE,
+        nullable=False,
     )
 
     service_id = Column(

@@ -3,7 +3,7 @@
 from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
-from gtfs_parser.model import MixIn
+from gtfs_parser.model import MixIn, Field
 
 
 class Agency(Base, MixIn):
@@ -12,7 +12,9 @@ class Agency(Base, MixIn):
 
     PREFIX = 'agency_'
 
-    NAME_MAPPING = {}
+    NAME_MAPPING = {
+        'agency_lang': 'language',
+    }
     DATA_MAPPING = {}
 
     FIELDS = (
@@ -50,7 +52,7 @@ class Agency(Base, MixIn):
         nullable=False,
     )
 
-    language= Column(
+    language = Column(
         'language',
         types.String,
         nullable=True,

@@ -3,15 +3,18 @@
 from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
+from gtfs_parser.model import MixIn
 
 
-class Service(Base):
+class Service(Base, MixIn):
     __tablename__ = 'service'
     __table_args__ = ()
 
     PREFIX = 'calendar_'
 
-    NAME_MAPPING = {}
+    NAME_MAPPING = {
+        'service_id': 'id',
+    }
     DATA_MAPPING = {}
 
     FIELDS = (

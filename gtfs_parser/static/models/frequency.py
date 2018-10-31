@@ -4,9 +4,10 @@ from sqlalchemy import Column, types, schema
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import RouteType
+from gtfs_parser.model import MixIn
 
 
-class Frequency(Base):
+class Frequency(Base, MixIn):
     __tablename__ = 'frequency'
     __table_args__ = (
         schema.ForeignKeyConstraint(['trip_id'], ['trip.id']),

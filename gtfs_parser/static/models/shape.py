@@ -4,9 +4,10 @@ from sqlalchemy import Column, types, UniqueConstraint
 
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import ExceptionType
+from gtfs_parser.model import MixIn
 
 
-class Shape(Base):
+class Shape(Base, MixIn):
     __tablename__ = 'shape'
     __table_args__ = ()
 
