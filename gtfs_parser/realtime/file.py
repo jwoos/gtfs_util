@@ -9,44 +9,50 @@ from google.protobuf.json_format import MessageToDict
 from google.transit import gtfs_realtime_pb2
 
 
-def load(filename, model=False):
-    with open(filename, 'rb') as f:
-        feed = gtfs_realtime_pb2.FeedMessage()
-        feed.ParseFromString(f.read())
+def load(*args, model=False):
+    feeds = []
 
-    raw_data = MessageToDict(feed)
+    for file in args:
+        with open(file, 'rb') as f:
+            feed = gtfs_realtime_pb2.FeedMessage()
+            feeds.append(feed)
+            feed.ParseFromString(f.read())
+
     data = {
         'trip_update': [],
         'vehicle': [],
         'alert': [],
     }
 
-    for inner_data in raw_data['entity']:
-        normalized_inner_data = normalize_data(normalize_names(inner_data))
+    for feed in feeds:
+        raw_data = MessageToDict(feed)
 
-        if 'tripUpdate' in inner_data:
-            if model:
-                data['trip_update'].append(
-                    trip_update.TripUpdate(**normalized_inner_data['trip_update'])
-                )
-            else:
-                data['trip_update'].append(normalized_inner_data['trip_update'])
+        for inner_data in raw_data['entity']:
+            normalized_inner_data = normalize_data(normalize_names(inner_data))
 
-        if 'alert' in normalized_inner_data:
-            if model:
-                data['alert'].append(
-                    alert.Alert(**normalized_inner_data['alert'])
-                )
-            else:
-                data['alert'].append(normalized_inner_data['alert'])
+            if 'tripUpdate' in inner_data:
+                if model:
+                    data['trip_update'].append(
+                        trip_update.TripUpdate(**normalized_inner_data['trip_update'])
+                    )
+                else:
+                    data['trip_update'].append(normalized_inner_data['trip_update'])
 
-        if 'vehicle' in normalized_inner_data:
-            if model:
-                data['vehicle'].append(
-                    vehicle.Vehicle(**normalized_inner_data['vehicle'])
-                )
-            else:
-                data['vehicle'].append(normalized_inner_data['vehicle'])
+            if 'alert' in normalized_inner_data:
+                if model:
+                    data['alert'].append(
+                        alert.Alert(**normalized_inner_data['alert'])
+                    )
+                else:
+                    data['alert'].append(normalized_inner_data['alert'])
+
+            if 'vehicle' in normalized_inner_data:
+                if model:
+                    data['vehicle'].append(
+                        vehicle.Vehicle(**normalized_inner_data['vehicle'])
+                    )
+                else:
+                    data['vehicle'].append(normalized_inner_data['vehicle'])
 
     return data
 
