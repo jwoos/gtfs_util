@@ -1,3 +1,5 @@
+import asyncio
+
 from gtfs_parser.realtime.models import (
     alert,
     trip_update,
@@ -5,19 +7,47 @@ from gtfs_parser.realtime.models import (
 )
 from gtfs_parser import util
 
+import aiofiles
 from google.protobuf.json_format import MessageToDict
 from google.transit import gtfs_realtime_pb2
 
 
+async def _read_async(file):
+    feed = gtfs_realtime_pb2.FeedMessage()
+    async with aiofiles.open(file, 'rb') as f:
+        feed.ParseFromString(await f.read())
+
+    return feed
+
+
+async def load_async(*args, model=False):
+    ops = (
+        _read_async(file)
+        for file in args
+    )
+    feeds = asyncio.gather(*ops)
+
+    return _parse(feeds, model=model)
+
+
+def _read(file):
+    feed = gtfs_realtime_pb2.FeedMessage()
+    with open(file, 'rb') as f:
+        feed.ParseFromString(f.read())
+
+    return feed
+
+
 def load(*args, model=False):
-    feeds = []
+    feeds = (
+        _read(file)
+        for file in args
+    )
 
-    for file in args:
-        with open(file, 'rb') as f:
-            feed = gtfs_realtime_pb2.FeedMessage()
-            feeds.append(feed)
-            feed.ParseFromString(f.read())
+    return _parse(feeds, model=model)
 
+
+def _parse(feeds, model=False):
     data = {
         'trip_update': [],
         'vehicle': [],
