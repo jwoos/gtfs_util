@@ -9,12 +9,12 @@ aiohttp = "*"
 protobuf = "*"
 requests = "*"
 SQLAlchemy = "*"
-ipython = "*"
 gtfs-realtime-bindings = "*"
 aiofiles = "*"
 
 [dev-packages]
 pytest = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.7"
