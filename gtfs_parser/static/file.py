@@ -1,3 +1,4 @@
+import asyncio
 from csv import DictReader
 import json
 import zipfile
@@ -28,11 +29,11 @@ FILENAME_MODEL_MAPPING = {
     constants.TRIP_FILENAME: trip.Trip,
 }
 
-async def _read_async(zipfile):
+async def _read_async(zipname):
     with zipfile.ZipFile(zipname, 'r') as f:
         infos = f.infolist()
         raw_data = {
-            i.zipname: DictReader(f.read(i.zipname).decode().split('\r\n'))
+            i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
             for i in infos
         }
 
@@ -44,16 +45,16 @@ async def load_async(*args, model=False):
         _read_async(file)
         for file in args
     )
-    feeds = asyncio.gather(*ops)
+    feeds = await asyncio.gather(*ops)
 
     return _parse(feeds, model=model)
 
 
-def _read(zipfile):
+def _read(zipname):
     with zipfile.ZipFile(zipname, 'r') as f:
         infos = f.infolist()
         raw_data = {
-            i.zipname: DictReader(f.read(i.zipname).decode().split('\r\n'))
+            i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
             for i in infos
         }
 
@@ -62,8 +63,8 @@ def _read(zipfile):
 
 def load(*args, model=False):
     feeds = (
-        _read(zipfile)
-        for zipfile in args
+        _read(zipname)
+        for zipname in args
     )
 
     return _parse(feeds, model=model)
@@ -91,9 +92,9 @@ def _parse(feeds, model=False):
             static_model = FILENAME_MODEL_MAPPING[file]
             reader.fieldnames = normalize_names(static_model, reader.fieldnames)
             if model:
-                data[file] += [static_model(**normalize_data(static_model, x)) for x in raw_data[file]]
+                data[file] += [static_model(**normalize_data(static_model, x)) for x in reader]
             else:
-                data[file] += [normalize_data(static_model, x) for x in raw_data[file]]
+                data[file] += [normalize_data(static_model, x) for x in reader]
 
     return data
 

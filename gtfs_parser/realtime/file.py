@@ -25,7 +25,7 @@ async def load_async(*args, model=False):
         _read_async(file)
         for file in args
     )
-    feeds = asyncio.gather(*ops)
+    feeds = await asyncio.gather(*ops)
 
     return _parse(feeds, model=model)
 
