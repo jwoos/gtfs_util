@@ -1,5 +1,6 @@
 import asyncio
 from csv import DictReader
+from io import BytesIO
 import json
 import zipfile
 
@@ -29,42 +30,61 @@ FILENAME_MODEL_MAPPING = {
     constants.TRIP_FILENAME: trip.Trip,
 }
 
-async def _read_async(zipname):
-    with zipfile.ZipFile(zipname, 'r') as f:
-        infos = f.infolist()
-        raw_data = {
-            i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
-            for i in infos
-        }
+
+async def _read_async(data, file=True):
+    if file:
+        with zipfile.ZipFile(data, 'r') as f:
+            infos = f.infolist()
+            raw_data = {
+                i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
+                for i in infos
+            }
+    else:
+        with BytesIO(data) as buffer:
+            with zipfile.ZipFile(buffer, 'r') as f:
+                infos = f.infolist()
+                raw_data = {
+                    i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
+                    for i in infos
+                }
 
     return raw_data
 
 
-async def load_async(*args, model=False):
+async def load_async(*args, model=False, file=True):
     ops = (
-        _read_async(file)
-        for file in args
+        _read_async(arg, file=fie)
+        for arg in args
     )
     feeds = await asyncio.gather(*ops)
 
     return _parse(feeds, model=model)
 
 
-def _read(zipname):
-    with zipfile.ZipFile(zipname, 'r') as f:
-        infos = f.infolist()
-        raw_data = {
-            i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
-            for i in infos
-        }
+def _read(data, file=True):
+    if file:
+        with zipfile.ZipFile(data, 'r') as f:
+            infos = f.infolist()
+            raw_data = {
+                i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
+                for i in infos
+            }
+    else:
+        with BytesIO(data) as buffer:
+            with zipfile.ZipFile(buffer, 'r') as f:
+                infos = f.infolist()
+                raw_data = {
+                    i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
+                    for i in infos
+                }
 
     return raw_data
 
 
-def load(*args, model=False):
+def load(*args, model=False, file=True):
     feeds = (
-        _read(zipname)
-        for zipname in args
+        _read(arg, file=file)
+        for arg in args
     )
 
     return _parse(feeds, model=model)

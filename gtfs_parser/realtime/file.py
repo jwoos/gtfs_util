@@ -12,36 +12,44 @@ from google.protobuf.json_format import MessageToDict
 from google.transit import gtfs_realtime_pb2
 
 
-async def _read_async(file):
+async def _read_async(data, file=True):
     feed = gtfs_realtime_pb2.FeedMessage()
-    async with aiofiles.open(file, 'rb') as f:
-        feed.ParseFromString(await f.read())
+
+    if file:
+        async with aiofiles.open(data, 'rb') as f:
+            feed.ParseFromString(await f.read())
+    else:
+        feed.ParseFromString(data)
 
     return feed
 
 
-async def load_async(*args, model=False):
+async def load_async(*args, model=False, file=True):
     ops = (
-        _read_async(file)
-        for file in args
+        _read_async(arg, file=file)
+        for arg in args
     )
     feeds = await asyncio.gather(*ops)
 
     return _parse(feeds, model=model)
 
 
-def _read(file):
+def _read(data, file=True):
     feed = gtfs_realtime_pb2.FeedMessage()
-    with open(file, 'rb') as f:
-        feed.ParseFromString(f.read())
+
+    if file:
+        with open(data, 'rb') as f:
+            feed.ParseFromString(f.read())
+    else:
+        feed.ParseFromString(data)
 
     return feed
 
 
-def load(*args, model=False):
+def load(*args, model=False, file=True):
     feeds = (
-        _read(file)
-        for file in args
+        _read(arg, file=file)
+        for arg in args
     )
 
     return _parse(feeds, model=model)
