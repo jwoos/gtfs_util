@@ -28,8 +28,48 @@ FILENAME_MODEL_MAPPING = {
     constants.TRIP_FILENAME: trip.Trip,
 }
 
+async def _read_async(zipfile):
+    with zipfile.ZipFile(zipname, 'r') as f:
+        infos = f.infolist()
+        raw_data = {
+            i.zipname: DictReader(f.read(i.zipname).decode().split('\r\n'))
+            for i in infos
+        }
+
+    return raw_data
+
+
+async def load_async(*args, model=False):
+    ops = (
+        _read_async(file)
+        for file in args
+    )
+    feeds = asyncio.gather(*ops)
+
+    return _parse(feeds, model=model)
+
+
+def _read(zipfile):
+    with zipfile.ZipFile(zipname, 'r') as f:
+        infos = f.infolist()
+        raw_data = {
+            i.zipname: DictReader(f.read(i.zipname).decode().split('\r\n'))
+            for i in infos
+        }
+
+    return raw_data
+
 
 def load(*args, model=False):
+    feeds = (
+        _read(zipfile)
+        for zipfile in args
+    )
+
+    return _parse(feeds, model=model)
+
+
+def _parse(feeds, model=False):
     data = {
         'agency.txt': [],
         'stops.txt': [],
@@ -46,21 +86,14 @@ def load(*args, model=False):
         'feed_info.txt': [],
     }
 
-    for zipname in args:
-        with zipfile.ZipFile(zipname, 'r') as f:
-            infos = f.infolist()
-            raw_data = {
-                i.zipname: DictReader(f.read(i.zipname).decode().split('\r\n'))
-                for i in infos
-            }
-
-            for file, reader in raw_data.items():
-                static_model = FILENAME_MODEL_MAPPING[file]
-                reader.fieldnames = normalize_names(static_model, reader.fieldnames)
-                if model:
-                    data[file] += [static_model(**normalize_data(static_model, x)) for x in raw_data[file]]
-                else:
-                    data[file] += [normalize_data(static_model, x) for x in raw_data[file]]
+    for feed in feeds:
+        for file, reader in feed.items():
+            static_model = FILENAME_MODEL_MAPPING[file]
+            reader.fieldnames = normalize_names(static_model, reader.fieldnames)
+            if model:
+                data[file] += [static_model(**normalize_data(static_model, x)) for x in raw_data[file]]
+            else:
+                data[file] += [normalize_data(static_model, x) for x in raw_data[file]]
 
     return data
 
