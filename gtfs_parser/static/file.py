@@ -4,6 +4,7 @@ from io import BytesIO
 import json
 import zipfile
 
+from gtfs_parser.util import TextZipFile
 from gtfs_parser import constants
 from gtfs_parser.static.models import (
     agency,
@@ -61,6 +62,38 @@ async def load_async(*args, model=False, file=True):
     return _parse(feeds, model=model)
 
 
+async def load_aiter(*args, model=False, file=True, chunk_size=1):
+    for arg in args:
+        with TextZipFile(arg, 'r') as z:
+            infos = z.infolist()
+            for info in infos:
+                name = info.filename
+                with z.open(name, 'r') as f:
+                    reader = DictReader(f)
+                    static_model = FILENAME_MODEL_MAPPING[name]
+                    reader.fieldnames = normalize_names(static_model, reader.fieldnames)
+
+                    buffer = []
+
+                    for line in reader:
+                        normalized_line = normalize_data(static_model, line)
+
+                        if model:
+                            data = static_model(**normalize_line)
+                        else:
+                            data = (normalized_line, arg, name)
+
+                        if chunk_size > 1:
+                            buffer.append(data)
+                            if len(buffer) == chunk_size:
+                                yield buffer
+                                buffer = []
+                        else:
+                            yield data
+
+                    yield buffer
+
+
 def _read(data, file=True):
     if file:
         with zipfile.ZipFile(data, 'r') as f:
@@ -88,6 +121,38 @@ def load(*args, model=False, file=True):
     )
 
     return _parse(feeds, model=model)
+
+
+def load_iter(*args, model=False, file=True, chunk_size=1):
+    for arg in args:
+        with TextZipFile(arg, 'r') as z:
+            infos = z.infolist()
+            for info in infos:
+                name = info.filename
+                with z.open(name, 'r') as f:
+                    reader = DictReader(f)
+                    static_model = FILENAME_MODEL_MAPPING[name]
+                    reader.fieldnames = normalize_names(static_model, reader.fieldnames)
+
+                    buffer = []
+
+                    for line in reader:
+                        normalized_line = normalize_data(static_model, line)
+
+                        if model:
+                            data = static_model(**normalize_line)
+                        else:
+                            data = (normalized_line, arg, name)
+
+                        if chunk_size > 1:
+                            buffer.append(data)
+                            if len(buffer) == chunk_size:
+                                yield buffer
+                                buffer = []
+                        else:
+                            yield data
+
+                    yield buffer
 
 
 def _parse(feeds, model=False):

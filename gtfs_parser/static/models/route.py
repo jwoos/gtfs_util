@@ -10,7 +10,7 @@ from gtfs_parser.model import MixIn
 class Route(Base, MixIn):
     __tablename__ = 'route'
     __table_args__ = (
-        schema.ForeignKeyConstraint(['agency_id'], ['agency.id']),
+        # schema.ForeignKeyConstraint(['agency_id'], ['agency.id']),
     )
 
     PREFIX = 'route_'

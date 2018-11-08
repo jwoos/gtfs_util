@@ -10,7 +10,7 @@ from gtfs_parser.model import MixIn
 class Frequency(Base, MixIn):
     __tablename__ = 'frequency'
     __table_args__ = (
-        schema.ForeignKeyConstraint(['trip_id'], ['trip.id']),
+        # schema.ForeignKeyConstraint(['trip_id'], ['trip.id']),
     )
 
     PREFIX = 'frequency_'

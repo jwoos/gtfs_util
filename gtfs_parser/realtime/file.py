@@ -34,6 +34,10 @@ async def load_async(*args, model=False, file=True):
     return _parse(feeds, model=model)
 
 
+async def load_aiter(*args, model=False, file=True):
+    raise NotImplementedError()
+
+
 def _read(data, file=True):
     feed = gtfs_realtime_pb2.FeedMessage()
 
@@ -53,6 +57,10 @@ def load(*args, model=False, file=True):
     )
 
     return _parse(feeds, model=model)
+
+
+def load_iter(*args, model=False, file=True) -> (dict, str, str):
+    raise NotImplementedError()
 
 
 def _parse(feeds, model=False):

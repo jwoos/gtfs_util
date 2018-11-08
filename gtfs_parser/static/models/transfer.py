@@ -10,8 +10,8 @@ from gtfs_parser.model import MixIn
 class Transfer(Base, MixIn):
     __tablename__ = 'transfer'
     __table_args__ = (
-        schema.ForeignKeyConstraint(['source_stop_id'], ['stop.id']),
-        schema.ForeignKeyConstraint(['destination_stop_id'], ['stop.id']),
+        # schema.ForeignKeyConstraint(['source_stop_id'], ['stop.id']),
+        # schema.ForeignKeyConstraint(['destination_stop_id'], ['stop.id']),
     )
 
     PREFIX = 'transfer_'

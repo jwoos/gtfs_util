@@ -9,7 +9,7 @@ from gtfs_parser.model import MixIn
 
 class Stop(Base, MixIn):
     __tablename__ = 'stop'
-    __tablename__ = ()
+    __table_args__ = ()
 
     PREFIX = 'stop_'
 

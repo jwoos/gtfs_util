@@ -10,8 +10,8 @@ from gtfs_parser.model import MixIn
 class StopTime(Base, MixIn):
     __tablename__ = 'stop_time'
     __table_args__ = (
-        schema.ForeignKeyConstraint(['trip_id'], ['trip.id']),
-        schema.ForeignKeyConstraint(['stop_id'], ['stop.id']),
+        # schema.ForeignKeyConstraint(['trip_id'], ['trip.id']),
+        # schema.ForeignKeyConstraint(['stop_id'], ['stop.id']),
     )
 
     PREFIX = 'stop_time_'

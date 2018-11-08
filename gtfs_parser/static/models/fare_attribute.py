@@ -9,7 +9,7 @@ from gtfs_parser.model import MixIn, Field
 class Fare(Base, MixIn):
     __tablename__ = 'fare'
     __table_args__ = (
-        schema.ForeignKeyConstraint(['agency_id'], ['agency.id']),
+        # schema.ForeignKeyConstraint(['agency_id'], ['agency.id']),
     )
 
     PREFIX = 'fare_'

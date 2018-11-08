@@ -9,9 +9,9 @@ from gtfs_parser.model import MixIn
 class Trip(Base, MixIn):
     __tablename__ = 'trip'
     __table_args__ = (
-        schema.ForeignKeyConstraint(['route_id'], ['route.id']),
-        schema.ForeignKeyConstraint(['service_id'], ['service.id']),
-        schema.ForeignKeyConstraint(['shape_id'], ['shape.id']),
+        # schema.ForeignKeyConstraint(['route_id'], ['route.id']),
+        # schema.ForeignKeyConstraint(['service_id'], ['service.id']),
+        # schema.ForeignKeyConstraint(['shape_id'], ['shape.id']),
     )
 
     PREFIX = 'trip_'
