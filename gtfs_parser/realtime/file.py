@@ -68,7 +68,7 @@ def _parse(feeds, model=False):
         for inner_data in raw_data['entity']:
             normalized_inner_data = normalize_data(normalize_names(inner_data))
 
-            if 'tripUpdate' in inner_data:
+            if 'trip_update' in normalized_inner_data:
                 if model:
                     data['trip_update'].append(
                         trip_update.TripUpdate(**normalized_inner_data['trip_update'])

@@ -29,7 +29,7 @@ class MixIn:
 
     FIELDS = ()
 
-    def jsonify(self):
+    def json(self):
         return {
             k: getattr(self, k, None) for k in self.FIELDS
         }
