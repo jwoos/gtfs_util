@@ -79,7 +79,7 @@ async def load_aiter(*args, model=False, file=True, chunk_size=1):
                         normalized_line = normalize_data(static_model, line)
 
                         if model:
-                            data = static_model(**normalize_line)
+                            data = static_model(**normalized_line)
                         else:
                             data = (normalized_line, arg, name)
 
@@ -143,7 +143,7 @@ def load_iter(*args, model=False, file=True, chunk_size=1):
                         normalized_line = normalize_data(static_model, line)
 
                         if model:
-                            data = static_model(**normalize_line)
+                            data = static_model(**normalized_line)
                         else:
                             data = (normalized_line, arg, name)
 
