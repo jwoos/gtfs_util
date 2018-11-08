@@ -124,6 +124,9 @@ def load(*args, model=False, file=True):
 
 
 def load_iter(*args, model=False, file=True, chunk_size=1):
+    if not file:
+        args = [BytesIO(arg) for arg in args]
+
     for arg in args:
         with TextZipFile(arg, 'r') as z:
             infos = z.infolist()
@@ -153,6 +156,9 @@ def load_iter(*args, model=False, file=True, chunk_size=1):
                             yield data
 
                     yield buffer
+
+        if not file:
+            arg.close()
 
 
 def _parse(feeds, model=False):

@@ -34,7 +34,7 @@ async def load_async(*args, model=False, file=True):
     return _parse(feeds, model=model)
 
 
-async def load_aiter(*args, model=False, file=True):
+async def load_aiter(*args, model=False, file=True, chunk_size=1):
     raise NotImplementedError()
 
 
@@ -59,7 +59,7 @@ def load(*args, model=False, file=True):
     return _parse(feeds, model=model)
 
 
-def load_iter(*args, model=False, file=True) -> (dict, str, str):
+def load_iter(*args, model=False, file=True, chunk_size=1) -> (dict, str, str):
     raise NotImplementedError()
 
 
