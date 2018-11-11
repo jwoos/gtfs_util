@@ -1,10 +1,11 @@
 # frequencies.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import RouteType
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class Frequency(Base, MixIn):
@@ -18,7 +19,12 @@ class Frequency(Base, MixIn):
     NAME_MAPPING = {
         'headway_secs': 'headway_seconds',
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'start_time': data.to_timedelta,
+        'end_time': data.to_timedelta,
+        'headway_seconds': int,
+        'exact_times': data.to_bool(val=True),
+    }
 
     FIELDS = (
         'id',
@@ -43,13 +49,13 @@ class Frequency(Base, MixIn):
 
     start_time = Column(
         'start_time',
-        types.DATETIME,
+        types.Interval,
         nullable=False,
     )
 
     end_time = Column(
         'end_time',
-        types.DATETIME,
+        types.Interval,
         nullable=False,
     )
 

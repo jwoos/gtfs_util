@@ -1,21 +1,33 @@
 # calendar.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class Service(Base, MixIn):
     __tablename__ = 'service'
-    __table_args__ = ()
+    __table_args__ = (
+    )
 
     PREFIX = 'calendar_'
 
     NAME_MAPPING = {
         'service_id': 'id',
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'monday': data.to_bool(nullable=False),
+        'tuesday': data.to_bool(nullable=False),
+        'wednesday': data.to_bool(nullable=False),
+        'thursday': data.to_bool(nullable=False),
+        'friday': data.to_bool(nullable=False),
+        'saturday': data.to_bool(nullable=False),
+        'sunday': data.to_bool(nullable=False),
+        'start_date': data.to_date,
+        'end_date': data.to_date,
+    }
 
     FIELDS = (
         'id',
@@ -33,7 +45,7 @@ class Service(Base, MixIn):
 
     id = Column(
         'id',
-        types.Integer,
+        types.String,
         primary_key=True,
     )
 

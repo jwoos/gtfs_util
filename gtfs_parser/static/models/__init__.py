@@ -1,4 +1,5 @@
 __all__ = [
+    'base',
     'agency',
     'fare_attribute',
     'fare_rule',
@@ -7,7 +8,7 @@ __all__ = [
     'route',
     'service',
     'service_update',
-    'shape',
+    'point',
     'stop',
     'stop_time',
     'transfer',

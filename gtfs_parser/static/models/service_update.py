@@ -1,22 +1,26 @@
 # calendar_dates.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import ExceptionType
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class ServiceUpdate(Base, MixIn):
     __tablename__ = 'service_update'
     __table_args__ = (
-        schema.UniqueConstraint('service_id', 'exception_type'),
+        schema.UniqueConstraint('service_id', 'date'),
     )
 
     PREFIX = 'calendar_date_'
 
     NAME_MAPPING = {}
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'date': data.to_date,
+        'exception_type': data.to_enum(ExceptionType),
+    }
 
     FIELDS = (
         'id',

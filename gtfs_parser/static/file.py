@@ -11,7 +11,7 @@ from gtfs_parser.static.models import (
     service,
     service_update,
     route,
-    shape,
+    point,
     stop_time,
     stop,
     transfer,
@@ -24,7 +24,7 @@ FILENAME_MODEL_MAPPING = {
     constants.SERVICE_FILENAME: service.Service,
     constants.SERVICE_UPDATE_FILENAME: service_update.ServiceUpdate,
     constants.ROUTE_FILENAME: route.Route,
-    constants.SHAPE_FILENAME: shape.Shape,
+    constants.POINT_FILENAME: point.Point,
     constants.STOP_TIME_FILENAME: stop_time.StopTime,
     constants.STOP_FILENAME: stop.Stop,
     constants.TRANSFER_FILENAME: transfer.Transfer,
@@ -143,7 +143,7 @@ def load_iter(*args, model=False, file=True, chunk_size=1):
                         normalized_line = normalize_data(static_model, line)
 
                         if model:
-                            data = static_model(**normalized_line)
+                            data = (static_model(**normalized_line), arg, name)
                         else:
                             data = (normalized_line, arg, name)
 
@@ -198,6 +198,10 @@ def normalize_names(model, raw_data):
     return data
 
 
-## TODO
 def normalize_data(model, raw_data):
-    return dict(raw_data)
+    transforms = model.DATA_MAPPING
+
+    return {
+        k: v if not transforms.get(k) else transforms[k](v)
+        for k, v in raw_data.items()
+    }

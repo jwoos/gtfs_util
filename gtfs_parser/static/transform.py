@@ -5,7 +5,7 @@ from gtfs_parser.static.models import (
     service,
     service_update,
     route,
-    shape,
+    point,
     stop_time,
     stop,
     transfer,

@@ -1,10 +1,11 @@
 # transfers.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import TransferType
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class Transfer(Base, MixIn):
@@ -21,7 +22,10 @@ class Transfer(Base, MixIn):
         'to_stop_id': 'destination_stop_id',
         'min_transfer_time': 'minimum_time',
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'type': data.to_enum(TransferType),
+        'minimum_time': int,
+    }
 
     FIELDS = (
         'id',

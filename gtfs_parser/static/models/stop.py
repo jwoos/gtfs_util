@@ -1,10 +1,11 @@
 # stops.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import LocationType
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class Stop(Base, MixIn):
@@ -20,8 +21,10 @@ class Stop(Base, MixIn):
         'wheelchair_boarding': 'wheelchair_accessible'
     }
     DATA_MAPPING = {
-        'location_type': lambda x: x if x is not None else 0,
-        'wheelchair_accessible': lambda x: x == 1 if x != 0 else None,
+        'location_type': data.to_enum(LocationType),
+        'wheelchair_accessible': data.to_bool(nullable=True),
+        'latitude': float,
+        'longitude': float,
     }
 
     FIELDS = (

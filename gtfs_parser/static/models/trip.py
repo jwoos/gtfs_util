@@ -1,9 +1,10 @@
 # trips.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class Trip(Base, MixIn):
@@ -20,8 +21,9 @@ class Trip(Base, MixIn):
         'direction_id': 'direction'
     }
     DATA_MAPPING = {
-        'wheelchair_accessible': lambda x: x == 1 if x != 0 else None,
-        'bikes_allowed': lambda x: x == 1 if x != 0 else None,
+        'direction': data.to_bool(nullable=False),
+        'wheelchair_accessible': data.to_bool(nullable=True),
+        'bikes_allowed': data.to_bool(nullable=True),
     }
 
     FIELDS = (

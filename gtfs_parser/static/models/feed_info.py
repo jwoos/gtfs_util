@@ -1,13 +1,14 @@
 # feed_info.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.model import MixIn
 
+from sqlalchemy import Column, types, schema
+
 
 class Feed(Base, MixIn):
-    __tablename__ = 'feed',
+    __tablename__ = 'feed'
     __table_args__ = ()
 
     PREFIX = 'feed_'
@@ -15,7 +16,10 @@ class Feed(Base, MixIn):
     NAME_MAPPING = {
         'feed_lang': 'language',
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'start_date': data.to_date,
+        'end_date': data.to_date,
+    }
 
     FIELDS = (
         'id',

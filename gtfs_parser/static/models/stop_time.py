@@ -1,10 +1,11 @@
 # stop_times.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import PickupDropOffType
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class StopTime(Base, MixIn):
@@ -22,7 +23,13 @@ class StopTime(Base, MixIn):
         'timepoint': 'exact_times',
     }
     DATA_MAPPING = {
-        'exact_times': lambda x: (x == 1) or (x is None)
+        'arrival_time': data.to_timedelta,
+        'departure_time': data.to_timedelta,
+        'stop_sequence': data.to_generic(int, nullable=False),
+        'pickup_type': data.to_enum(PickupDropOffType),
+        'dropoff_type': data.to_enum(PickupDropOffType),
+        'shape_distance_traveled': data.to_generic(float, nullable=True),
+        'exact_times': data.to_bool,
     }
 
     FIELDS = (
@@ -41,7 +48,7 @@ class StopTime(Base, MixIn):
 
     id = Column(
         'id',
-        types.String,
+        types.Integer,
         primary_key=True,
     )
 
@@ -53,13 +60,13 @@ class StopTime(Base, MixIn):
 
     arrival_time = Column(
         'arrival_time',
-        types.DATETIME,
+        types.Interval,
         nullable=False,
     )
 
     departure_time = Column(
         'departure_time',
-        types.DATETIME,
+        types.Interval,
         nullable=False,
     )
 

@@ -1,17 +1,20 @@
 # shapes.txt
 
-from sqlalchemy import Column, types, UniqueConstraint
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import ExceptionType
 from gtfs_parser.model import MixIn
 
+from sqlalchemy import Column, types, schema
 
-class Shape(Base, MixIn):
-    __tablename__ = 'shape'
-    __table_args__ = ()
 
-    PREFIX = 'shape_'
+class Point(Base, MixIn):
+    __tablename__ = 'point'
+    __table_args__ = (
+        schema.UniqueConstraint('id', 'shape_id'),
+    )
+
+    PREFIX = 'point_'
 
     NAME_MAPPING = {
         'shape_pt_lat': 'latitude',
@@ -19,20 +22,32 @@ class Shape(Base, MixIn):
         'shape_pt_sequence': 'sequence',
         'shape_dist_traveled': 'distance_traveled',
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'latitude': float,
+        'longitude': float,
+        'sequence': int,
+        'distance_traveled': data.to_generic(float, nullable=True),
+    }
 
     FIELDS = (
         'id',
-        'point_latitude',
-        'point_longitude',
+        'shape_id'
+        'latitude',
+        'longitude',
+        'sequence',
         'distance_traveled',
-        ''
     )
 
     id = Column(
         'id',
-        types.String,
+        types.Integer,
         primary_key=True,
+    )
+
+    shape_id = Column(
+        'shape_id',
+        types.String,
+        nullable=False,
     )
 
     latitude = Column(

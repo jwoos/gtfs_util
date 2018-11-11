@@ -1,9 +1,10 @@
 # agency.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.model import MixIn, Field
+
+from sqlalchemy import Column, types, schema
 
 
 class Agency(Base, MixIn):

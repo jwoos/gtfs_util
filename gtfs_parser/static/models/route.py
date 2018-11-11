@@ -1,10 +1,11 @@
 # routes.txt
 
-from sqlalchemy import Column, types, schema
-
+from gtfs_parser.static import data
 from gtfs_parser.static.models.base import Base
 from gtfs_parser.enum import RouteType
 from gtfs_parser.model import MixIn
+
+from sqlalchemy import Column, types, schema
 
 
 class Route(Base, MixIn):
@@ -18,7 +19,10 @@ class Route(Base, MixIn):
     NAME_MAPPING = {
         'route_desc': 'description',
     }
-    DATA_MAPPING = {}
+    DATA_MAPPING = {
+        'type': data.to_enum(RouteType),
+        'sort_order': int,
+    }
 
     FIELDS = (
         'id',
