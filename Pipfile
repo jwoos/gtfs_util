@@ -11,6 +11,7 @@ requests = "*"
 SQLAlchemy = "*"
 gtfs-realtime-bindings = "*"
 aiofiles = "*"
+"psycopg2" = "*"
 
 [dev-packages]
 pytest = "*"
