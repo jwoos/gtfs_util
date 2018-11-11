@@ -191,11 +191,12 @@ def _parse(feeds, model=False):
 
 
 def normalize_names(model, raw_data):
-    data = [
-        model.name_transform(name) for name in raw_data
-    ]
+    transforms = model.NAME_MAPPING
 
-    return data
+    return [
+        transforms.get(name, None) or name.replace(model.PREFIX, '')
+        for name in raw_data
+    ]
 
 
 def normalize_data(model, raw_data):
