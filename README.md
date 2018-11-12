@@ -1,4 +1,4 @@
-# GTFS Parser
+# GTFS Util
 
 ## What?
 This is a library to work with GTFS data.
