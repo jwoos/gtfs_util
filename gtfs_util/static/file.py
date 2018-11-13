@@ -32,13 +32,13 @@ FILENAME_MODEL_MAPPING = {
 }
 
 
-async def _read_async(data, file=True):
+async def _read_async(data, file=True, mask=set()):
     if file:
         with zipfile.ZipFile(data, 'r') as f:
             infos = f.infolist()
             raw_data = {
                 i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
-                for i in infos
+                for i in infos if i not in mask
             }
     else:
         with BytesIO(data) as buffer:
@@ -46,15 +46,15 @@ async def _read_async(data, file=True):
                 infos = f.infolist()
                 raw_data = {
                     i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
-                    for i in infos
+                    for i in infos if i not in mask
                 }
 
     return raw_data
 
 
-async def load_async(*args, model=False, file=True):
+async def load_async(*args, model=False, file=True, mask=set()):
     ops = (
-        _read_async(arg, file=fie)
+        _read_async(arg, file=fie, mask=mask)
         for arg in args
     )
     feeds = await asyncio.gather(*ops)
@@ -62,12 +62,15 @@ async def load_async(*args, model=False, file=True):
     return _parse(feeds, model=model)
 
 
-async def load_aiter(*args, model=False, file=True, chunk_size=1):
+async def load_aiter(*args, model=False, file=True, chunk_size=1, mask=set()):
     for arg in args:
         with TextZipFile(arg, 'r') as z:
             infos = z.infolist()
             for info in infos:
                 name = info.filename
+                if name in mask:
+                    continue
+
                 with z.open(name, 'r') as f:
                     reader = DictReader(f)
                     static_model = FILENAME_MODEL_MAPPING[name]
@@ -94,13 +97,13 @@ async def load_aiter(*args, model=False, file=True, chunk_size=1):
                     yield buffer
 
 
-def _read(data, file=True):
+def _read(data, file=True, mask=set()):
     if file:
         with zipfile.ZipFile(data, 'r') as f:
             infos = f.infolist()
             raw_data = {
                 i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
-                for i in infos
+                for i in infos if i not in mask
             }
     else:
         with BytesIO(data) as buffer:
@@ -108,22 +111,22 @@ def _read(data, file=True):
                 infos = f.infolist()
                 raw_data = {
                     i.filename: DictReader(f.read(i.filename).decode().split('\r\n'))
-                    for i in infos
+                    for i in infos if i not in mask
                 }
 
     return raw_data
 
 
-def load(*args, model=False, file=True):
+def load(*args, model=False, file=True, mask=set()):
     feeds = (
-        _read(arg, file=file)
+        _read(arg, file=file, mask=mask)
         for arg in args
     )
 
     return _parse(feeds, model=model)
 
 
-def load_iter(*args, model=False, file=True, chunk_size=1):
+def load_iter(*args, model=False, file=True, chunk_size=1, mask=set()):
     if not file:
         args = [BytesIO(arg) for arg in args]
 
@@ -132,6 +135,9 @@ def load_iter(*args, model=False, file=True, chunk_size=1):
             infos = z.infolist()
             for info in infos:
                 name = info.filename
+                if name in mask:
+                    continue
+
                 with z.open(name, 'r') as f:
                     reader = DictReader(f)
                     static_model = FILENAME_MODEL_MAPPING[name]
