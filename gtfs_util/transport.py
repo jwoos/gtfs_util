@@ -1,4 +1,4 @@
-from gtfs_parse.base import Base
+from gtfs_util.base import Base
 
 
 class Transport(Base):

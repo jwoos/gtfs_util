@@ -1,4 +1,4 @@
-from gtfs_parser.realtime.models import (
+from gtfs_util.realtime.models import (
     alert,
     trip_update,
     vehicle

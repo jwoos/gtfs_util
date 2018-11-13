@@ -1,9 +1,9 @@
 # stop_times.txt
 
-from gtfs_parser.static import data
-from gtfs_parser.static.models.base import Base
-from gtfs_parser.enum import PickupDropOffType
-from gtfs_parser.model import MixIn
+from gtfs_util.static import data
+from gtfs_util.static.models.base import Base
+from gtfs_util.enum import PickupDropOffType
+from gtfs_util.model import MixIn
 
 from sqlalchemy import Column, types, schema
 

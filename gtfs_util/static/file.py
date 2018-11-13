@@ -4,9 +4,9 @@ from io import BytesIO
 import json
 import zipfile
 
-from gtfs_parser.util import TextZipFile
-from gtfs_parser import constants
-from gtfs_parser.static.models import (
+from gtfs_util.util import TextZipFile
+from gtfs_util import constants
+from gtfs_util.static.models import (
     agency,
     service,
     service_update,

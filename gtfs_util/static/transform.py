@@ -1,5 +1,5 @@
-from gtfs_parser import constants
-from gtfs_parser.static.models import (
+from gtfs_util import constants
+from gtfs_util.static.models import (
     FILENAME_MODEL_MAPPING,
     agency,
     service,

@@ -1,4 +1,4 @@
-from gtfs_parser.realtime.models.base import Base
+from gtfs_util.realtime.models.base import Base
 
 from collections import namedtuple
 

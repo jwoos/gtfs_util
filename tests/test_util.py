@@ -1,6 +1,6 @@
 import unittest
 
-from gtfs_parser import util
+from gtfs_util import util
 
 
 class TestCamelToSnake(unittest.TestCase):

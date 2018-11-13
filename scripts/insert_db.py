@@ -2,8 +2,8 @@
 
 from contextlib import contextmanager
 
-from gtfs_parser.static.models import *
-from gtfs_parser.static import file
+from gtfs_util.static.models import *
+from gtfs_util.static import file
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

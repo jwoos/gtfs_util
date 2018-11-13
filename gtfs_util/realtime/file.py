@@ -1,11 +1,11 @@
 import asyncio
 
-from gtfs_parser.realtime.models import (
+from gtfs_util.realtime.models import (
     alert,
     trip_update,
     vehicle
 )
-from gtfs_parser import util
+from gtfs_util import util
 
 import aiofiles
 from google.protobuf.json_format import MessageToDict
