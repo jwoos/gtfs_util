@@ -4,3 +4,10 @@ __all__ = [
     'trip_update',
     'vehicle',
 ]
+
+from gtfs_util.realtime.models import (
+    base,
+    alert,
+    trip_update,
+    vehicle,
+)

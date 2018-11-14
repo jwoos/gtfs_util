@@ -14,3 +14,20 @@ __all__ = [
     'transfer',
     'trip',
 ]
+
+from gtfs_util.static.models import (
+    base,
+    agency,
+    fare_attribute,
+    fare_rule,
+    feed_info,
+    frequency,
+    route,
+    service,
+    service_update,
+    point,
+    stop,
+    stop_time,
+    transfer,
+    trip,
+)
