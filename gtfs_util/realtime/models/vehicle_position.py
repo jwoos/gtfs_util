@@ -4,26 +4,26 @@ from gtfs_util.realtime import data
 from collections import namedtuple
 
 
-class TripUpdate(namedtuple(
-    'TripUpdate',
+class VehiclePosition(namedtuple(
+    'VehiclePosition',
     [
         'trip',
-        'stop_time_update',
-        'vehicle',
+        'position',
         'timestamp',
-        'delay',
-    ]
+        'stop_id',
+        'vehicle',
+    ],
 ), MixIn):
     NAME_MAPPING = {}
     DATA_MAPPING = {
         'timestamp': int,
-        'stop_time_update': data.transform_stop_time_update,
+        'trip': data.transform_trip,
     }
 
     FIELDS = (
         'trip',
-        'stop_time_update',
-        'vehicle',
+        'position',
         'timestamp',
-        'delay',
+        'stop_id',
+        'vehicle',
     )

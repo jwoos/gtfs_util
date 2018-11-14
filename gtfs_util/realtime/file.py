@@ -3,7 +3,7 @@ import asyncio
 from gtfs_util.realtime.models import (
     alert,
     trip_update,
-    vehicle
+    vehicle_position,
 )
 from gtfs_util import util
 
@@ -66,7 +66,7 @@ def load_iter(*args, model=False, file=True, chunk_size=1) -> (dict, str, str):
 def _parse(feeds, model=False):
     data = {
         'trip_update': [],
-        'vehicle': [],
+        'vehicle_position': [],
         'alert': [],
     }
 
@@ -74,31 +74,34 @@ def _parse(feeds, model=False):
         raw_data = MessageToDict(feed)
 
         for inner_data in raw_data['entity']:
-            normalized_inner_data = normalize_data(normalize_names(inner_data))
+            normalized_inner_data = normalize_names(inner_data)
 
             if 'trip_update' in normalized_inner_data:
+                normalized_inner_data = normalize_data(trip_update.TripUpdate, normalized_inner_data['trip_update'])
                 if model:
                     data['trip_update'].append(
-                        trip_update.TripUpdate(**normalized_inner_data['trip_update'])
+                        trip_update.TripUpdate(**(normalized_inner_data))
                     )
                 else:
-                    data['trip_update'].append(normalized_inner_data['trip_update'])
+                    data['trip_update'].append(normalized_inner_data)
 
             if 'alert' in normalized_inner_data:
+                normalized_inner_data = normalize_data(alert.Alert, normalized_inner_data['alert'])
                 if model:
                     data['alert'].append(
-                        alert.Alert(**normalized_inner_data['alert'])
+                        alert.Alert(**normalized_inner_data)
                     )
                 else:
-                    data['alert'].append(normalized_inner_data['alert'])
+                    data['alert'].append(normalized_inner_data)
 
             if 'vehicle' in normalized_inner_data:
+                normalized_inner_data = normalize_data(vehicle_position.VehiclePosition, normalized_inner_data['vehicle'])
                 if model:
-                    data['vehicle'].append(
-                        vehicle.Vehicle(**normalized_inner_data['vehicle'])
+                    data['vehicle_position'].append(
+                        vehicle.Vehicle(**normalized_inner_data)
                     )
                 else:
-                    data['vehicle'].append(normalized_inner_data['vehicle'])
+                    data['vehicle_position'].append(normalized_inner_data)
 
     return data
 
@@ -123,5 +126,14 @@ def normalize_names(raw_data):
     return data
 
 
-def normalize_data(raw_data):
-    return raw_data
+def normalize_data(model, raw_data):
+    data = {}
+
+    for k, v in raw_data.items():
+        transform = model.DATA_MAPPING.get(k)
+        if transform:
+            data[k] = transform(v)
+        else:
+            data[k] = v
+
+    return data

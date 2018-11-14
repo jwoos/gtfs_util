@@ -1,4 +1,5 @@
-from gtfs_util.realtime.models.base import Base
+from gtfs_util.model import MixIn
+from gtfs_util.realtime import data
 
 from collections import namedtuple
 
@@ -13,4 +14,15 @@ class Alert(namedtuple(
         'informed_entity',
     ],
 )):
-    pass
+    NAME_MAPPING = {}
+    DATA_MAPPING = {
+        'active_period': data.transform_active_period,
+    }
+
+    FIELDS = (
+        'active_period',
+        'description_text',
+        'effect',
+        'header_text',
+        'informed_entity',
+    )
