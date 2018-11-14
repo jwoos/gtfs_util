@@ -161,7 +161,8 @@ def load_iter(*args, model=False, file=True, chunk_size=1, mask=set()):
                         else:
                             yield data
 
-                    yield buffer
+                    if chunk_size > 1:
+                        yield buffer
 
         if not file:
             arg.close()
