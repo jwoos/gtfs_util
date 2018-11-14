@@ -6,8 +6,11 @@ from collections import namedtuple
 class Alert(namedtuple(
     'Alert',
     [
-        'informed_entity',
+        'active_period',
+        'description_text',
+        'effect',
         'header_text',
+        'informed_entity',
     ],
 )):
     pass

@@ -7,10 +7,10 @@ class Vehicle(namedtuple(
     'Vehicle',
     [
         'trip',
-        'current_stop_sequence',
-        'current_status',
+        'position',
         'timestamp',
         'stop_id',
+        'vehicle',
     ],
 )):
     pass

@@ -8,6 +8,9 @@ class TripUpdate(namedtuple(
     [
         'trip',
         'stop_time_update',
+        'vehicle',
+        'timestamp',
+        'delay',
     ]
 )):
     pass
