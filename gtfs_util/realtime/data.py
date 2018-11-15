@@ -27,8 +27,13 @@ def transform_active_period(x):
 
 def transform_stop_time_update(x):
     for stop in x:
-        stop['arrival']['time'] = int(stop['arrival']['time'])
-        stop['departure']['time'] = int(stop['departure']['time'])
+        arrival_time = stop.get('arrival', {}).get('time')
+        if arrival_time:
+            stop['arrival']['time'] = int(arrival_time)
+
+        departure_time = stop.get('departure', {}).get('time')
+        if departure_time:
+            stop['departure']['time'] = int(departure_time)
 
     return x
 
