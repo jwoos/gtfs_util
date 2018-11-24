@@ -29,7 +29,7 @@ class Service(Base, MixIn):
         'end_date': data.to_date,
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'monday',
         'tuesday',
@@ -40,7 +40,7 @@ class Service(Base, MixIn):
         'sunday',
         'start_date',
         'end_date',
-    )
+    }
 
 
     id = Column(

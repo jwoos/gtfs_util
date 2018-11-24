@@ -24,7 +24,7 @@ class Route(Base, MixIn):
         'sort_order': int,
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'agency_id',
         'short_name',
@@ -35,7 +35,7 @@ class Route(Base, MixIn):
         'color',
         'text_color',
         'sort_order',
-    )
+    }
 
     id = Column(
         'id',

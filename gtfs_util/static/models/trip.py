@@ -26,7 +26,7 @@ class Trip(Base, MixIn):
         'bikes_allowed': data.to_bool(nullable=True),
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'route_id',
         'service_id',
@@ -37,7 +37,7 @@ class Trip(Base, MixIn):
         'shape_id',
         'wheelchair_accessible',
         'bikes_allowed',
-    )
+    }
 
     id = Column(
         'id',

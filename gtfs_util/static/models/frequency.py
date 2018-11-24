@@ -26,14 +26,14 @@ class Frequency(Base, MixIn):
         'exact_times': data.to_bool(val=True),
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'trip_id',
         'start_time',
         'end_time',
         'headway_seconds',
         'exact_times',
-    )
+    }
 
     id = Column(
         'id',

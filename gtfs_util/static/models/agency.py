@@ -18,7 +18,7 @@ class Agency(Base, MixIn):
     }
     DATA_MAPPING = {}
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'name',
         'url',
@@ -27,7 +27,7 @@ class Agency(Base, MixIn):
         'phone',
         'fare_url',
         'email',
-    )
+    }
 
     id = Column(
         'id',

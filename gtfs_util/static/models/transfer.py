@@ -27,13 +27,13 @@ class Transfer(Base, MixIn):
         'minimum_time': int,
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'source_stop_id',
         'destination_stop_id',
         'type',
         'minimum_time',
-    )
+    }
 
     id = Column(
         'id',

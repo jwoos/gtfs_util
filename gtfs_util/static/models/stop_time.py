@@ -32,7 +32,7 @@ class StopTime(Base, MixIn):
         'exact_times': data.to_bool,
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'trip_id',
         'arrival_time',
@@ -44,7 +44,7 @@ class StopTime(Base, MixIn):
         'dropoff_type',
         'shape_distance_traveled',
         'exact_times',
-    )
+    }
 
     id = Column(
         'id',

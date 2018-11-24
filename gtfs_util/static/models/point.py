@@ -29,14 +29,14 @@ class Point(Base, MixIn):
         'distance_traveled': data.to_generic(float, nullable=True),
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
-        'shape_id'
+        'shape_id',
         'latitude',
         'longitude',
         'sequence',
         'distance_traveled',
-    )
+    }
 
     id = Column(
         'id',

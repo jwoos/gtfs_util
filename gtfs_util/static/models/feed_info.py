@@ -21,7 +21,7 @@ class Feed(Base, MixIn):
         'end_date': data.to_date,
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'publisher_name',
         'publisher_url',
@@ -31,7 +31,7 @@ class Feed(Base, MixIn):
         'version',
         'contact_email',
         'contact_url',
-    )
+    }
 
     id = Column(
         'id',

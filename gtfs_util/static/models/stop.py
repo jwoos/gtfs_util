@@ -27,11 +27,11 @@ class Stop(Base, MixIn):
         'longitude': float,
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'code',
         'name',
-        'description'
+        'description',
         'longitude',
         'latitude',
         'zone_id',
@@ -40,7 +40,7 @@ class Stop(Base, MixIn):
         'timezone',
         'url',
         'wheelchair_accessible',
-    )
+    }
 
     id = Column(
         'id',

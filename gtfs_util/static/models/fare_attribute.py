@@ -20,7 +20,7 @@ class Fare(Base, MixIn):
         'price': float,
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'price',
         'currency_type',
@@ -28,7 +28,7 @@ class Fare(Base, MixIn):
         'transfers',
         'agency_id',
         'transfer_duration',
-    )
+    }
 
     id = Column(
         'id',

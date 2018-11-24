@@ -22,12 +22,12 @@ class ServiceUpdate(Base, MixIn):
         'exception_type': data.to_enum(ExceptionType),
     }
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'date',
         'service_id',
         'exception_type',
-    )
+    }
 
     id = Column(
         'id',

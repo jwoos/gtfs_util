@@ -19,14 +19,14 @@ class FareRule(Base, MixIn):
     NAME_MAPPING = {}
     DATA_MAPPING = {}
 
-    FIELDS = (
+    FIELDS = {
         'id',
         'fare_id',
         'route_id',
         'origin_id',
         'destination_id',
         'contains_id',
-    )
+    }
 
     id = Column(
         'id',
