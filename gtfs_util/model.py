@@ -17,7 +17,17 @@ class MixIn:
 
     FIELDS = ()
 
-    def json(self):
+    def json(self, whitelist=set(), blacklist=set()):
+        if blacklist:
+            return {
+                k: getattr(self, k, None) for k in self.FIELDS if k not in blacklist
+            }
+
+        if whitelist:
+            return {
+                k: getattr(self, k, None) for k in self.FIELDS if k in whitelist
+            }
+
         return {
             k: getattr(self, k, None) for k in self.FIELDS
         }
