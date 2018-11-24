@@ -52,21 +52,13 @@ class Point(Base, MixIn):
 
     latitude = Column(
         'latitude',
-        types.DECIMAL(
-            precision=9,
-            decimal_return_scale=6,
-            asdecimal=True,
-        ),
+        types.Numeric(9, 6, asdecimal=True),
         nullable=False,
     )
 
     longitude = Column(
         'longitude',
-        types.DECIMAL(
-            precision=9,
-            decimal_return_scale=6,
-            asdecimal=True,
-        ),
+        types.Numeric(9, 6, asdecimal=True),
         nullable=False,
     )
 

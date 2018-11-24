@@ -68,20 +68,12 @@ class Stop(Base, MixIn):
 
     longitude = Column(
         'longitude',
-        types.DECIMAL(
-            precision=9,
-            decimal_return_scale=6,
-            asdecimal=True,
-        ),
+        types.Numeric(9, 6, asdecimal=True),
     )
 
     latitude = Column(
         'latitude',
-        types.DECIMAL(
-            precision=9,
-            decimal_return_scale=6,
-            asdecimal=True,
-        ),
+        types.Numeric(9, 6, asdecimal=True),
     )
 
     zone_id = Column(
