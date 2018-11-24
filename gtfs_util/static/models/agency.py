@@ -2,7 +2,7 @@
 
 from gtfs_util.static import data
 from gtfs_util.static.models.base import Base
-from gtfs_util.model import MixIn, Field
+from gtfs_util.model import MixIn
 
 from sqlalchemy import Column, types, schema
 

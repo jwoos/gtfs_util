@@ -1,4 +1,3 @@
-import abc
 from collections import namedtuple
 
 
@@ -10,17 +9,6 @@ class Base(abc.ABC):
             setattr(self, k, v)
 
 
-class Field(namedtuple(
-    'Field',
-    [
-        'name',
-        'type',
-    ]
-)):
-    pass
-
-
-# class MixIn(abc.ABC):
 class MixIn:
     PREFIX = ''
 
