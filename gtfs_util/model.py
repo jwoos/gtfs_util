@@ -1,7 +1,8 @@
+from abc import ABC
 from collections import namedtuple
 
 
-class Base(abc.ABC):
+class Base(ABC):
     def __init__(self, *args, **kwargs):
         self.arsg = args
 
