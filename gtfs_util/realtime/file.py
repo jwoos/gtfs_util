@@ -13,11 +13,11 @@ from google.transit import gtfs_realtime_pb2
 from google.protobuf.message import DecodeError
 
 
-def safe_parse_from_string(feed):
+def safe_parse_from_string(feed, data):
     okay = True
 
     try:
-        feed.ParseFromString(await f.read())
+        feed.ParseFromString(data)
     except DecodeError:
         okay = False
 
@@ -29,11 +29,11 @@ async def _read_async(data, file=True):
 
     if file:
         async with aiofiles.open(data, 'rb') as f:
-            okay = safe_parse_from_string(await f.read())
+            okay = safe_parse_from_string(feed, await f.read())
             if not okay:
                 feed = None
     else:
-        okay = safe_parse_from_string(data)
+        okay = safe_parse_from_string(feed, data)
         if not okay:
             feed = None
 
@@ -61,11 +61,11 @@ def _read(data, file=True):
 
     if file:
         with open(data, 'rb') as f:
-            okay = safe_parse_from_string(f.read())
+            okay = safe_parse_from_string(feed, f.read())
             if not okay:
                 feed = None
     else:
-        okay = safe_parse_from_string(data)
+        okay = safe_parse_from_string(feed, data)
         if not okay:
             feed = None
 
