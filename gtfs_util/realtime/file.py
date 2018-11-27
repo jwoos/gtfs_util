@@ -42,10 +42,8 @@ async def _read_async(data, file=True):
 
 async def load_async(*args, model=False, file=True):
     ops = (
-        x for x in (
-            _read_async(arg, file=file)
-            for arg in args
-        ) if x
+        _read_async(arg, file=file)
+        for arg in args
     )
     feeds = await asyncio.gather(*ops)
 
@@ -74,10 +72,8 @@ def _read(data, file=True):
 
 def load(*args, model=False, file=True):
     feeds = (
-        x for x in (
-            _read(arg, file=file)
-            for arg in args
-        ) if x
+        _read(arg, file=file)
+        for arg in args
     )
 
     return _parse(feeds, model=model)
@@ -95,6 +91,9 @@ def _parse(feeds, model=False):
     }
 
     for feed in feeds:
+        if feed is None:
+            continue
+
         raw_data = MessageToDict(feed)
 
         for inner_data in raw_data['entity']:
