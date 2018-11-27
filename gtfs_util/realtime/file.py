@@ -85,7 +85,7 @@ def _parse(feeds, model=False):
                 else:
                     data['trip_update'].append(normalized_inner_data)
 
-            if 'alert' in normalized_inner_data:
+            elif 'alert' in normalized_inner_data:
                 normalized_inner_data = normalize_data(alert.Alert, normalized_inner_data['alert'])
                 if model:
                     data['alert'].append(
@@ -94,7 +94,7 @@ def _parse(feeds, model=False):
                 else:
                     data['alert'].append(normalized_inner_data)
 
-            if 'vehicle' in normalized_inner_data:
+            elif 'vehicle' in normalized_inner_data:
                 normalized_inner_data = normalize_data(vehicle_position.VehiclePosition, normalized_inner_data['vehicle'])
                 if model:
                     data['vehicle_position'].append(
