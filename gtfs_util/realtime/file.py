@@ -10,6 +10,18 @@ from gtfs_util import util
 import aiofiles
 from google.protobuf.json_format import MessageToDict
 from google.transit import gtfs_realtime_pb2
+from google.protobuf.message import DecodeError
+
+
+def safe_parse_from_string(feed):
+    okay = True
+
+    try:
+        feed.ParseFromString(await f.read())
+    except DecodeError:
+        okay = False
+
+    return okay
 
 
 async def _read_async(data, file=True):
@@ -17,17 +29,23 @@ async def _read_async(data, file=True):
 
     if file:
         async with aiofiles.open(data, 'rb') as f:
-            feed.ParseFromString(await f.read())
+            okay = safe_parse_from_string(await f.read())
+            if not okay:
+                feed = None
     else:
-        feed.ParseFromString(data)
+        okay = safe_parse_from_string(data)
+        if not okay:
+            feed = None
 
     return feed
 
 
 async def load_async(*args, model=False, file=True):
     ops = (
-        _read_async(arg, file=file)
-        for arg in args
+        x for x in (
+            _read_async(arg, file=file)
+            for arg in args
+        ) if x
     )
     feeds = await asyncio.gather(*ops)
 
@@ -43,17 +61,23 @@ def _read(data, file=True):
 
     if file:
         with open(data, 'rb') as f:
-            feed.ParseFromString(f.read())
+            okay = safe_parse_from_string(f.read())
+            if not okay:
+                feed = None
     else:
-        feed.ParseFromString(data)
+        okay = safe_parse_from_string(data)
+        if not okay:
+            feed = None
 
     return feed
 
 
 def load(*args, model=False, file=True):
     feeds = (
-        _read(arg, file=file)
-        for arg in args
+        x for x in (
+            _read(arg, file=file)
+            for arg in args
+        ) if x
     )
 
     return _parse(feeds, model=model)
